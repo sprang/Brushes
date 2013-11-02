@@ -938,12 +938,11 @@ NSString *WDGestureEndedNotification = @"WDGestureEnded";
     
     NSMutableArray *images = [NSMutableArray array];
     
-    if (locked && hidden) {
+    if (locked) {
         [images addObject:[UIImage imageNamed:@"lockMessage.png"]];
-        [images addObject:[UIImage imageNamed:@"hiddenMessage.png"]];
-    } else if (locked) {
-        [images addObject:[UIImage imageNamed:@"lockMessage.png"]];
-    } else {
+    }
+    
+    if (hidden){
         [images addObject:[UIImage imageNamed:@"hiddenMessage.png"]];
     }
     
