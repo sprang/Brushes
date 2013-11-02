@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>Height</key>
+		<integer>480</integer>
+		<key>Name</key>
+		<string>iPhone</string>
+		<key>Width</key>
+		<integer>320</integer>
+	</dict>
+	<dict>
+		<key>Height</key>
+		<integer>960</integer>
+		<key>Name</key>
+		<string>iPhone Retina</string>
+		<key>Width</key>
+		<integer>640</integer>
+	</dict>
+	<dict>
+		<key>Height</key>
+		<integer>1136</integer>
+		<key>Name</key>
+		<string>iPhone 5</string>
+		<key>Width</key>
+		<integer>640</integer>
+	</dict>
+	<dict>
+		<key>Height</key>
+		<integer>1024</integer>
+		<key>Name</key>
+		<string>iPad</string>
+		<key>Width</key>
+		<integer>768</integer>
+	</dict>
+	<dict>
+		<key>Height</key>
+		<integer>2048</integer>
+		<key>Name</key>
+		<string>iPad Retina</string>
+		<key>Width</key>
+		<integer>1536</integer>
+	</dict>
+	<dict>
+		<key>Name</key>
+		<string>Custom</string>
+		<key>Custom</key>
+		<true/>
+	</dict>
+</array>
+</plist>

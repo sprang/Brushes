@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>WDCustomSizeHeight</key>
+	<integer>1024</integer>
+	<key>WDCustomSizeWidth</key>
+	<integer>1024</integer>
+	<key>WDPreferredExportFormat</key>
+	<real>0</real>
+	<key>WDTwoFingerInterfaceToggle</key>
+	<false/>
+	<key>WDStylusMode</key>
+	<integer>0</integer>
+</dict>
+</plist>

@@ -1,0 +1,121 @@
+{
+	"blit" : {
+		"vertex" : "blit",
+		"fragment" : "blit",
+		"attributes" : ["inPosition", "inTexcoord"],
+		"uniforms" : ["modelViewProjectionMatrix", "texture", "opacity"]
+	},
+
+	"nonPremultipliedBlit" : {
+		"vertex" : "blit",
+		"fragment" : "nonPremultipliedBlit",
+		"attributes" : ["inPosition", "inTexcoord"],
+		"uniforms" : ["modelViewProjectionMatrix", "texture", "opacity"]
+	},
+    
+	"straightBlit" : {
+		"vertex" : "blit",
+		"fragment" : "straightBlit",
+		"attributes" : ["inPosition", "inTexcoord"],
+		"uniforms" : ["modelViewProjectionMatrix", "texture"]
+	},
+
+
+	"unPremultipliedBlit" : {
+		"vertex" : "blit",
+		"fragment" : "unPremultipliedBlit",
+		"attributes" : ["inPosition", "inTexcoord"],
+		"uniforms" : ["modelViewProjectionMatrix", "texture", "opacity"]
+	},
+
+	"blitWithMask" : {
+		"vertex" : "blit",
+		"fragment" : "blitWithMask",
+		"attributes" : ["inPosition", "inTexcoord"],
+		"uniforms" : ["modelViewProjectionMatrix", "texture", "opacity", "mask", "color", "lockAlpha"]
+	},
+
+	"compositeWithMask" : {
+		"vertex" : "blit",
+		"fragment" : "compositeWithMask",
+		"attributes" : ["inPosition", "inTexcoord"],
+		"uniforms" : ["modelViewProjectionMatrix", "texture", "mask", "color", "lockAlpha"]
+	},
+
+	"compositeWithEraseMask" : {
+		"vertex" : "blit",
+		"fragment" : "compositeWithEraseMask",
+		"attributes" : ["inPosition", "inTexcoord"],
+		"uniforms" : ["modelViewProjectionMatrix", "texture", "mask", "lockAlpha"]
+	},
+
+	"blitWithEraseMask" : {
+		"vertex" : "blit",
+		"fragment" : "blitWithEraseMask",
+		"attributes" : ["inPosition", "inTexcoord"],
+		"uniforms" : ["modelViewProjectionMatrix", "texture", "opacity", "mask"]
+	},
+
+	"desaturate" : {
+		"vertex" : "blit",
+		"fragment" : "desaturate",
+		"attributes" : ["inPosition", "inTexcoord"],
+		"uniforms" : ["modelViewProjectionMatrix", "texture"]
+	},
+
+	"invert" : {
+		"vertex" : "blit",
+		"fragment" : "invert",
+		"attributes" : ["inPosition", "inTexcoord"],
+		"uniforms" : ["modelViewProjectionMatrix", "texture"]
+	},
+
+	"merge" : {
+		"vertex" : "blit",
+		"fragment" : "merge",
+		"attributes" : ["inPosition", "inTexcoord"],
+		"uniforms" : ["modelViewProjectionMatrix", "bottom", "top", "bottomOpacity", "topOpacity", "blendMode"]
+	},
+
+	"colorBalanceBlit" : {
+		"vertex" : "blit",
+		"fragment" : "colorBalanceBlit",
+		"attributes" : ["inPosition", "inTexcoord"],
+		"uniforms" : ["modelViewProjectionMatrix", "texture", "opacity", "redShift", "greenShift", "blueShift", "premultiply"]
+	},
+
+	"toHueChromaLuma" : {
+		"vertex" : "blit",
+		"fragment" : "toHueChromaLuma",
+		"attributes" : ["inPosition", "inTexcoord"],
+		"uniforms" : ["modelViewProjectionMatrix", "texture"]
+	},
+
+	"blitFromHueChromaLuma" : {
+		"vertex" : "blit",
+		"fragment" : "blitFromHueChromaLuma",
+		"attributes" : ["inPosition", "inTexcoord"],
+		"uniforms" : ["modelViewProjectionMatrix", "texture", "opacity", "hueShift", "saturationShift", "brightnessShift", "premultiply"]
+	},
+
+	"simple" : {
+		"vertex" : "simple",
+		"fragment" : "simple",
+		"attributes" : ["inPosition"],
+		"uniforms" : ["modelViewProjectionMatrix", "color"]
+	},
+
+	"brush" : {
+		"vertex" : "brush",
+		"fragment" : "brush",
+		"attributes" : ["inPosition", "inTexcoord", "alpha"],
+		"uniforms" : ["modelViewProjectionMatrix", "texture"]
+	},
+    
+    "fill" : {
+		"vertex" : "blit",
+		"fragment" : "fill",
+		"attributes" : ["inPosition", "inTexcoord"],
+		"uniforms" : ["modelViewProjectionMatrix", "texture", "color", "lockAlpha"]
+	}
+}

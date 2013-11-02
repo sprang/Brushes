@@ -1,0 +1,26 @@
+ [
+  
+  {"type":"WDBrush","generator":{"type":"WDCrossHatchGenerator","seed":1707803183,"size":{"type":"size","w":512,"h":512},"blurRadius":0,"deviation":1,"density":15},"uuid":"RxfkYmHgSFqJ5BZHn3as9A","weight":80,"intensity":0.3,"angle":0,"spacing":0.02,"rotationalScatter":0,"positionalScatter":0.5,"angleDynamics":1,"weightDynamics":0,"intensityDynamics":1},
+  
+  {"type":"WDBrush","generator":{"type":"WDSquareBristleGenerator","seed":439945596,"size":{"type":"size","w":512,"h":512},"blurRadius":0,"bristleDensity":20},"uuid":"19AwBIKYR0uqD7Fty0n9vA","weight":80,"intensity":0.2,"angle":0,"spacing":0.02,"rotationalScatter":0,"positionalScatter":0.5,"angleDynamics":1,"weightDynamics":0,"intensityDynamics":1},
+  
+  {"type":"WDBrush","generator":{"type":"WDSquareBristleGenerator","seed":1841429235,"size":{"type":"size","w":512,"h":512},"blurRadius":0,"bristleDensity":8},"uuid":"yWDhZzspReWW1fCzVj3eRA","weight":80,"intensity":0.15,"angle":0,"spacing":0.02,"rotationalScatter":0,"positionalScatter":0.5,"angleDynamics":1,"weightDynamics":0,"intensityDynamics":1},
+  
+  {"type":"WDBrush","generator":{"type":"WDSquareBristleGenerator","seed":439945596,"size":{"type":"size","w":512,"h":512},"blurRadius":0,"bristleDensity":4.29379},"uuid":"ht5FVzwPQAmA8rNBiBB9JQ","weight":80,"intensity":0.15,"angle":45,"spacing":0.02,"rotationalScatter":0,"positionalScatter":0.5,"angleDynamics":1,"weightDynamics":0,"intensityDynamics":1},
+  
+  {"type":"WDBrush","generator":{"type":"WDSquareBristleGenerator","seed":454819768,"size":{"type":"size","w":512,"h":512},"blurRadius":0,"bristleDensity":6},"uuid":"JYBrxIFBSJeRl0XZTOGZgQ","weight":80,"intensity":0.5,"angle":45,"spacing":0.2,"rotationalScatter":0,"positionalScatter":0.5,"angleDynamics":0,"weightDynamics":0,"intensityDynamics":1},
+  
+  {"type":"WDBrush","generator":{"type":"WDZigZagGenerator","seed":257229930,"size":{"type":"size","w":512,"h":512},"blurRadius":0,"density":20},"uuid":"u6k7lhSHTeaQFuPRgSOmcg","weight":80,"intensity":0.25,"angle":0,"spacing":0.03,"rotationalScatter":1,"positionalScatter":1,"angleDynamics":0,"weightDynamics":0,"intensityDynamics":0},
+  
+  {"type":"WDBrush","generator":{"type":"WDMosaicGenerator","seed":93772585,"size":{"type":"size","w":512,"h":512},"blurRadius":0,"deviation":1,"density":50},"uuid":"Dy2v7R6yTB2pvq9QD1NxNg","weight":80,"intensity":0.2,"angle":0,"spacing":0.05,"rotationalScatter":0,"positionalScatter":0.1,"angleDynamics":1,"weightDynamics":-0.5,"intensityDynamics":0.5},
+  
+  {"type":"WDBrush","generator":{"type":"WDSplotchGenerator","seed":605788434,"size":{"type":"size","w":512,"h":512},"blurRadius":10,"splotchiness":25},"uuid":"4yxy0BlQTXeFnJmZ3MNw+Q","weight":80,"intensity":0.25,"angle":0,"spacing":0.1,"rotationalScatter":1,"positionalScatter":0.5,"angleDynamics":0,"weightDynamics":0.5,"intensityDynamics":0.75},
+  
+  {"type":"WDBrush","generator":{"type":"WDCrossHatchGenerator","seed":1975568907,"size":{"type":"size","w":512,"h":512},"blurRadius":0,"deviation":1,"density":6},"uuid":"JCJiE9F9Tk6jcW2rvqKYow","weight":80,"intensity":0.4,"angle":0,"spacing":0.08,"rotationalScatter":1,"positionalScatter":1,"angleDynamics":1,"weightDynamics":0,"intensityDynamics":1},
+  
+  {"type":"WDBrush","generator":{"type":"WDSpiralGenerator","seed":1497883190,"size":{"type":"size","w":512,"h":512},"blurRadius":0,"density":15},"uuid":"VJzvqinCRKCzFlWdaGG0aw","weight":80,"intensity":1,"angle":0,"spacing":0.0829379,"rotationalScatter":1,"positionalScatter":1,"angleDynamics":1,"weightDynamics":0,"intensityDynamics":1},
+  
+  {"type":"WDBrush","generator":{"type":"WDBristleGenerator","seed":1503899051,"size":{"type":"size","w":512,"h":512},"blurRadius":0,"bristleSize":0.01,"bristleDensity":1},"uuid":"J7mqBDiJTWGD5ur4oL4iLg","weight":80,"intensity":0.4,"angle":0,"spacing":0.02,"rotationalScatter":1,"positionalScatter":1,"angleDynamics":1,"weightDynamics":0,"intensityDynamics":0},
+  
+  {"type":"WDBrush","generator":{"type":"WDCirclesGenerator","seed":1682137805,"size":{"type":"size","w":512,"h":512},"blurRadius":0,"density":10.4463},"uuid":"pdwpbLzzTtKHz-P05CgS1A","weight":80,"intensity":0.2,"angle":0,"spacing":0.01,"rotationalScatter":0,"positionalScatter":0,"angleDynamics":0,"weightDynamics":0.4,"intensityDynamics":0}
+  ]
