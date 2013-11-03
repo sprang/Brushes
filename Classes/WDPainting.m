@@ -799,12 +799,7 @@ NSString *WDActiveLayerChangedNotification = @"WDActiveLayerChangedNotification"
 
 + (BOOL) supportsDeepColor
 {
-    NSString *platform = [UIDeviceHardware platform];
-    NSString *device = [platform componentsSeparatedByString:@","][0];
-    
-    NSSet *validDevices = [NSSet setWithObjects:@"iPhone4", @"iPhone5", @"iPod5", @"iPad2", @"iPad3", nil];
-    
-    return [validDevices containsObject:device];
+    return WDCanUseHDTextures();
 }
 
 - (void) preloadPaintTexture
