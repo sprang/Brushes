@@ -287,7 +287,7 @@
 		6B93923B144FD96C00305670 /* WDColorWheel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B93923A144FD96B00305670 /* WDColorWheel.m */; };
 		6B93923E144FF64D00305670 /* WDInsetView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B93923D144FF64C00305670 /* WDInsetView.m */; };
 		6B939241144FF80400305670 /* WDColorSquare.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B939240144FF80200305670 /* WDColorSquare.m */; };
-		6B9394D51452774100305670 /* gL_matrix.c in Sources */ = {isa = PBXBuildFile; fileRef = 6B9394D11452774100305670 /* gL_matrix.c */; };
+		6B9394D51452774100305670 /* gl_matrix.c in Sources */ = {isa = PBXBuildFile; fileRef = 6B9394D11452774100305670 /* gl_matrix.c */; };
 		6B9394D61452774100305670 /* Shaders.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B9394D41452774100305670 /* Shaders.m */; };
 		6B9394D91452B89800305670 /* blend_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B9394D81452B89800305670 /* blend_button.png */; };
 		6B9394DA1453D80300305670 /* simple.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 6B9394C8145230C500305670 /* simple.vsh */; };
@@ -818,7 +818,7 @@
 		6B939240144FF80200305670 /* WDColorSquare.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WDColorSquare.m; sourceTree = "<group>"; };
 		6B9394C8145230C500305670 /* simple.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = simple.vsh; path = Shaders/simple.vsh; sourceTree = "<group>"; };
 		6B9394CA1452321400305670 /* simple.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = simple.fsh; path = Shaders/simple.fsh; sourceTree = "<group>"; };
-		6B9394D11452774100305670 /* gL_matrix.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = gL_matrix.c; sourceTree = "<group>"; };
+		6B9394D11452774100305670 /* gl_matrix.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = gl_matrix.c; sourceTree = "<group>"; };
 		6B9394D21452774100305670 /* gl_matrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gl_matrix.h; sourceTree = "<group>"; };
 		6B9394D31452774100305670 /* Shaders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Shaders.h; sourceTree = "<group>"; };
 		6B9394D41452774100305670 /* Shaders.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Shaders.m; sourceTree = "<group>"; };
@@ -1522,7 +1522,7 @@
 		6B9394D71452778700305670 /* Shader Utils */ = {
 			isa = PBXGroup;
 			children = (
-				6B9394D11452774100305670 /* gL_matrix.c */,
+				6B9394D11452774100305670 /* gl_matrix.c */,
 				6B9394D21452774100305670 /* gl_matrix.h */,
 				6B9394D31452774100305670 /* Shaders.h */,
 				6B9394D41452774100305670 /* Shaders.m */,
@@ -2257,7 +2257,7 @@
 				6B40CE34181FD10F00004FB2 /* WDPolygonGenerator.m in Sources */,
 				6B40CE33181FD10F00004FB2 /* WDPath.m in Sources */,
 				6B40CD9F181FCFFE00004FB2 /* NSData+Additions.m in Sources */,
-				6B9394D51452774100305670 /* gL_matrix.c in Sources */,
+				6B9394D51452774100305670 /* gl_matrix.c in Sources */,
 				6B9394D61452774100305670 /* Shaders.m in Sources */,
 				C01FCF5008A9545400542486 /* WDSynchronizer.m in Sources */,
 				6B40CE2F181FD10F00004FB2 /* WDHueSaturation.m in Sources */,
