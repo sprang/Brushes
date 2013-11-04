@@ -19,7 +19,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="850"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" allowsSelectionDuringEditing="YES" rowHeight="148" sectionHeaderHeight="22" sectionFooterHeight="22" id="5" customClass="WDTableView">
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" allowsSelectionDuringEditing="YES" rowHeight="148" sectionHeaderHeight="22" sectionFooterHeight="22" id="5">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="758"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
