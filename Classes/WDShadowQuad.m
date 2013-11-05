@@ -131,7 +131,7 @@
     
     if (!CGRectEqualToRect(rect, lastRect)) {
         [self freeBuffers];
-        WDGLBuildQuadForRect(rect, CGAffineTransformIdentity, &vao_, &vbo_, NO);
+        WDGLBuildQuadForRect(rect, CGAffineTransformIdentity, &vao_, &vbo_);
     }
     
     // Bind the texture to be used

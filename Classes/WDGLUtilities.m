@@ -11,7 +11,7 @@
 
 #import "WDGLUtilities.h"
 
-void WDGLBuildQuadForRect(CGRect rect, CGAffineTransform transform, GLuint *quadVAO, GLuint *quadVBO, BOOL stroke)
+void WDGLBuildQuadForRect(CGRect rect, CGAffineTransform transform, GLuint *quadVAO, GLuint *quadVBO)
 {
     CGPoint corners[4];
     
@@ -24,33 +24,19 @@ void WDGLBuildQuadForRect(CGRect rect, CGAffineTransform transform, GLuint *quad
         corners[i] = CGPointApplyAffineTransform(corners[i], transform);
     }
     
+    const GLfloat vertices[] = {
+        corners[0].x, corners[0].y, 0.0, 0.0,
+        corners[1].x, corners[1].y, 1.0, 0.0,
+        corners[3].x, corners[3].y, 0.0, 1.0,
+        corners[2].x, corners[2].y, 1.0, 1.0,
+    };
+    
     glGenVertexArraysOES(1, quadVAO);
     glBindVertexArrayOES(*quadVAO);
     
     // create, bind, and populate VBO
     glGenBuffers(1, quadVBO);
     glBindBuffer(GL_ARRAY_BUFFER, *quadVBO);
-    
-    const GLfloat *vertices = NULL;
-    
-    if (stroke) {
-        const GLfloat quadVertices[] = {
-            corners[0].x, corners[0].y, 0.0, 0.0,
-            corners[1].x, corners[1].y, 1.0, 0.0,
-            corners[2].x, corners[2].y, 1.0, 1.0,
-            corners[3].x, corners[3].y, 0.0, 1.0
-        };
-        vertices = quadVertices;
-    } else {
-        const GLfloat quadVertices[] = {
-            corners[0].x, corners[0].y, 0.0, 0.0,
-            corners[1].x, corners[1].y, 1.0, 0.0,
-            corners[3].x, corners[3].y, 0.0, 1.0,
-            corners[2].x, corners[2].y, 1.0, 1.0,
-        };
-        vertices = quadVertices;
-    }
-    
     glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 16, vertices, GL_STATIC_DRAW);
     
     // set up attrib pointers

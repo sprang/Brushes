@@ -791,7 +791,7 @@ NSString *WDActiveLayerChangedNotification = @"WDActiveLayerChangedNotification"
     if (!quadVAO_) {
         [EAGLContext setCurrentContext:self.context];
         CGRect bounds = CGRectMake(0, 0, self.width, self.height);
-        WDGLBuildQuadForRect(bounds, CGAffineTransformIdentity, &quadVAO_, &quadVBO_, NO);
+        WDGLBuildQuadForRect(bounds, CGAffineTransformIdentity, &quadVAO_, &quadVBO_);
     }
     
     return quadVAO_;
