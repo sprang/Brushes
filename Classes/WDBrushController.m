@@ -59,11 +59,16 @@
     self.navigationItem.rightBarButtonItem.enabled = canRandomize;
 }
 
-- (void) brushChanged:(NSNotification *)aNotification
+- (void) updatePreview
 {
     [picker setImage:brush.generator.preview forIndex:picker.selectedIndex];
-    
     preview.image = [brush previewImageWithSize:preview.bounds.size];
+}
+
+- (void) brushChanged:(NSNotification *)aNotification
+{
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updatePreview) object:nil];
+    [self performSelector:@selector(updatePreview) withObject:nil afterDelay:0];
     
     [self enableRandomizeButton];
 }

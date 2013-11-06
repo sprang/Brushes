@@ -822,8 +822,6 @@ NSString *WDActiveLayerChangedNotification = @"WDActiveLayerChangedNotification"
     
     [brushTexture_ freeGLResources];
     brushTexture_ = nil;
-    
-    [self configureBrush:[WDActiveState sharedInstance].brush];
 }
 
 - (WDTexture *) brushTexture:(WDBrush *)brush

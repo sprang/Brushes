@@ -22,6 +22,8 @@
 @property (nonatomic) WDBrush *brush;
 @property (nonatomic, weak) UITableView *table;
 
+@property (nonatomic) BOOL previewDirty;
+
 - (IBAction)disclose:(id)sender;
 
 @end

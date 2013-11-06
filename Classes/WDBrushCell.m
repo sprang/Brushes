@@ -20,6 +20,7 @@
 @synthesize editButton;
 @synthesize brush;
 @synthesize table;
+@synthesize previewDirty;
 
 - (void) awakeFromNib
 {
@@ -37,7 +38,8 @@
 
 - (void) brushChanged:(NSNotification *)aNotification
 {
-    preview.image = [brush previewImageWithSize:preview.bounds.size];
+    [self setNeedsLayout];
+    self.previewDirty = YES;
     
     WDProperty *prop = [aNotification userInfo][@"property"];
     if (prop && prop == brush.weight) {
@@ -81,6 +83,11 @@
     // make sure our width doesn't get smaller if the reorder view is made visible
     frame.size.width = CGRectGetWidth(self.superview.frame);
     self.contentView.frame = frame;
+    
+    if (self.previewDirty) {
+        preview.image = [brush previewImageWithSize:preview.bounds.size];
+        self.previewDirty = NO;
+    }
 }
 
 @end
