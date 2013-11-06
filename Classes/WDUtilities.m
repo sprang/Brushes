@@ -225,9 +225,9 @@ CGPoint WDNormalizePoint(CGPoint vector)
 
 float OSVersion()
 {
-    static NSInteger  version_ = 0.0f;
+    static NSInteger  version_ = 0;
     
-    if (version_ == 0.0f) {
+    if (version_ == 0) {
         version_ = [[[UIDevice currentDevice] systemVersion] integerValue];
     }
     
