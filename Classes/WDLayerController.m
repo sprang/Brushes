@@ -480,7 +480,7 @@
     UITableViewCell *selected = [layerTable_ cellForRowAtIndexPath:[layerTable_ indexPathForSelectedRow]];
 
     // if the cell is nil or not completely visible, we should scroll the table
-    if (!selected || !CGRectEqualToRect(CGRectIntersection(selected.frame, layerTable_.bounds), selected.frame)) { 
+    if (!selected || !CGRectIntersectsRect(selected.frame, layerTable_.bounds)) {
         [layerTable_ scrollToNearestSelectedRowAtScrollPosition:UITableViewScrollPositionMiddle animated:NO];
     }
 }
