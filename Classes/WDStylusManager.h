@@ -16,14 +16,12 @@
 typedef enum {
     WDNoStylus = 0,
     WDPogoConnectStylus,
-    //WDAdonitJotTouchStylus,
     WDMaxStylusTypes
 } WDStylusType;
 
 typedef enum {
     WDBlueToothOff = 0,
-    WDBlueToothBasic,   // Adonit
-    WDBlueToothLowEnergy // Pogo Connect
+    WDBlueToothLowEnergy
 } WDBlueToothState;
 
 @interface WDStylusData : NSObject

@@ -68,14 +68,14 @@ NSString *WDBlueToothStateChangedNotification = @"WDBlueToothStateChangedNotific
     
     centralBlueToothManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil];
     
-    self.mode = WDClamp(0, WDMaxStylusTypes, [[NSUserDefaults standardUserDefaults] integerForKey:@"WDStylusMode"]);
+    self.mode = [[NSUserDefaults standardUserDefaults] integerForKey:@"WDStylusMode"];
     
     return self;
 }
 
 - (NSUInteger) numberOfStylusTypes
 {
-    return (self.blueToothState == WDBlueToothBasic) ? (WDMaxStylusTypes - 1) : WDMaxStylusTypes;
+    return WDMaxStylusTypes;
 }
 
 - (NSUInteger) numberOfStylusesForType:(WDStylusType)type
@@ -85,6 +85,17 @@ NSString *WDBlueToothStateChangedNotification = @"WDBlueToothStateChangedNotific
 
 - (void) setMode:(WDStylusType)inMode
 {
+    // in case the number of supported styluses changes from version to version...
+    if (inMode >= WDMaxStylusTypes) {
+        WDLog(@"Stylus mode out of range.");
+        inMode = WDNoStylus;
+    }
+    
+    if (WDDeviceIsPhone()) {
+        // not supporting styluses on phones at the moment
+        inMode = WDNoStylus;
+    }
+    
     if (mode == inMode) {
         return;
     }
@@ -231,16 +242,6 @@ NSString *WDBlueToothStateChangedNotification = @"WDBlueToothStateChangedNotific
 
 #pragma mark -- General BlueTooth state
 
-- (BOOL) supportsBasicBluetooth
-{
-    NSString *platform = [UIDeviceHardware platform];
-    NSString *device = [platform componentsSeparatedByString:@","][0];
-    
-    NSSet *validDevices = [NSSet setWithObjects:@"iPhone 3", @"iPhone4", @"iPhone5", @"iPod5", @"iPad2", @"iPad3", nil];
-    
-    return [validDevices containsObject:device];
-}
-
 - (BOOL) isBlueToothEnabled
 {
     return self.blueToothState != WDBlueToothOff;
@@ -266,9 +267,7 @@ NSString *WDBlueToothStateChangedNotification = @"WDBlueToothStateChangedNotific
 {
     if (central.state == CBCentralManagerStatePoweredOn) {
         // only support this on iPads
-        self.blueToothState = WDDeviceIsPhone() ? WDBlueToothBasic : WDBlueToothLowEnergy;
-    } else if ([self supportsBasicBluetooth]) {
-        self.blueToothState = WDBlueToothBasic;
+        self.blueToothState = WDDeviceIsPhone() ? WDBlueToothOff : WDBlueToothLowEnergy;
     } else {
         self.blueToothState = WDBlueToothOff;
     }
