@@ -411,6 +411,8 @@
 		C01FCF5008A9545400542493 /* WDUpdateLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = C01FCF5008A9545400542492 /* WDUpdateLayer.m */; };
 		C01FCF5008A9545400542499 /* WDDocumentChange.m in Sources */ = {isa = PBXBuildFile; fileRef = C01FCF5008A9545400542498 /* WDDocumentChange.m */; };
 		C01FCF5008A95454005424A5 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C01FCF5008A95454005424A4 /* Accelerate.framework */; };
+		E7F79FE91890395100999BE2 /* JotTouchSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7F79FE81890395100999BE2 /* JotTouchSDK.framework */; };
+		E7F79FEB1890395F00999BE2 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7F79FEA1890395F00999BE2 /* CoreMotion.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -985,6 +987,8 @@
 		C01FCF5008A9545400542492 /* WDUpdateLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WDUpdateLayer.m; sourceTree = "<group>"; };
 		C01FCF5008A9545400542498 /* WDDocumentChange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WDDocumentChange.m; sourceTree = "<group>"; };
 		C01FCF5008A95454005424A4 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		E7F79FE81890395100999BE2 /* JotTouchSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JotTouchSDK.framework; sourceTree = "<group>"; };
+		E7F79FEA1890395F00999BE2 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -992,6 +996,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E7F79FEB1890395F00999BE2 /* CoreMotion.framework in Frameworks */,
+				6BDB83D01593D2920037E10B /* CoreBluetooth.framework in Frameworks */,
+				E7F79FE91890395100999BE2 /* JotTouchSDK.framework in Frameworks */,
 				29E41AC213F9B229000C3305 /* libz.dylib in Frameworks */,
 				29FF9389145223600000B6BB /* AudioToolbox.framework in Frameworks */,
 				6BD7072012AD011F004E07C9 /* CoreGraphics.framework in Frameworks */,
@@ -1009,7 +1016,6 @@
 				6B6240511561B941003EB9B3 /* DropboxSDK.framework in Frameworks */,
 				6BDB83CA1593CDC10037E10B /* libT1PogoManager.a in Frameworks */,
 				6BDB83CE1593D2710037E10B /* AVFoundation.framework in Frameworks */,
-				6BDB83D01593D2920037E10B /* CoreBluetooth.framework in Frameworks */,
 				6B29083616013C2400593812 /* Social.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1084,6 +1090,8 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E7F79FEA1890395F00999BE2 /* CoreMotion.framework */,
+				E7F79FE81890395100999BE2 /* JotTouchSDK.framework */,
 				29E41AC113F9B229000C3305 /* libz.dylib */,
 				6BDB83C11593CDC10037E10B /* T1PogoManager */,
 				C01FCF5008A95454005424A4 /* Accelerate.framework */,
@@ -1893,7 +1901,7 @@
 				ORGANIZATIONNAME = "Taptrix, Inc.";
 				TargetAttributes = {
 					1D6058900D05DD3D006BFB54 = {
-						DevelopmentTeam = CQ46W8F62S;
+						DevelopmentTeam = U23H35XF22;
 						SystemCapabilities = {
 							com.apple.GameCenter = {
 								enabled = 0;
@@ -2384,6 +2392,7 @@
 					"$(inherited)",
 					"$(SRCROOT)",
 					/Users/sprang/Development/Brushes,
+					/Users/alan/dev/Brushes,
 				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -2396,6 +2405,10 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/T1PogoManager\"",
+				);
+				OTHER_LDFLAGS = (
+					"-lxml2",
+					"-ObjC",
 				);
 				PRODUCT_NAME = Brushes;
 				PROVISIONING_PROFILE = "";
@@ -2418,6 +2431,7 @@
 					"$(inherited)",
 					"$(SRCROOT)",
 					/Users/sprang/Development/Brushes,
+					/Users/alan/dev/Brushes,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Brushes_Prefix.pch;
@@ -2428,6 +2442,10 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/T1PogoManager\"",
+				);
+				OTHER_LDFLAGS = (
+					"-lxml2",
+					"-ObjC",
 				);
 				PRODUCT_NAME = Brushes;
 				PROVISIONING_PROFILE = "";
@@ -2471,6 +2489,7 @@
 					"$(inherited)",
 					"$(SRCROOT)",
 					/Users/sprang/Development/Brushes,
+					/Users/alan/dev/Brushes,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Brushes_Prefix.pch;
@@ -2481,6 +2500,10 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/T1PogoManager\"",
+				);
+				OTHER_LDFLAGS = (
+					"-lxml2",
+					"-ObjC",
 				);
 				PRODUCT_NAME = Brushes;
 				PROVISIONING_PROFILE = "";
@@ -2528,6 +2551,7 @@
 					"$(inherited)",
 					"$(SRCROOT)",
 					/Users/sprang/Development/Brushes,
+					/Users/alan/dev/Brushes,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Brushes_Prefix.pch;
@@ -2539,6 +2563,10 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/T1PogoManager\"",
+				);
+				OTHER_LDFLAGS = (
+					"-lxml2",
+					"-ObjC",
 				);
 				PRODUCT_NAME = Brushes;
 				PROVISIONING_PROFILE = "";

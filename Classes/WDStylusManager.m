@@ -37,6 +37,7 @@ NSString *WDBlueToothStateChangedNotification = @"WDBlueToothStateChangedNotific
 @implementation WDStylusManager
 
 @synthesize pogoManager;
+@synthesize jotManager;
 @synthesize newlyDiscoveredPen;
 @synthesize centralBlueToothManager;
 @synthesize blueToothState;
@@ -128,6 +129,10 @@ NSString *WDBlueToothStateChangedNotification = @"WDBlueToothStateChangedNotific
             data.connected = pen.isConnected;
             data.pogoPen = pen;
         }
+    } else if (type == WDJotTouchStylus) {
+        data.productName = NSLocalizedString(@"Jot Touch", @"Jot Touch");
+        data.connected = (jotManager.connectionStatus == JotConnectionStatusConnected);
+        data.batteryLevel = @(jotManager.batteryLevel / 100.0f);
     }
     
     return data;
@@ -146,6 +151,12 @@ NSString *WDBlueToothStateChangedNotification = @"WDBlueToothStateChangedNotific
     if ((mode == WDPogoConnectStylus) && [pogoManager oneOrMorePensAreConnected]) {
         isReal = YES;
         pressure = [pogoManager pressureForTouch:touch];
+    } else if ((mode == WDJotTouchStylus) && ([jotManager connectionStatus] == JotConnectionStatusConnected)) {
+        isReal = YES;
+        NSLog(@"Pressure: %lu", (unsigned long)[jotManager getPressure]);
+        pressure = [jotManager getPressure] / 2047.0f;
+        
+        
     } else if (mode != WDNoStylus) {
         isReal = YES;
         // since we're in stylus mode, but no styli are active, use 1.0 pressure
@@ -192,6 +203,52 @@ NSString *WDBlueToothStateChangedNotification = @"WDBlueToothStateChangedNotific
 {
     NSDictionary *userInfo = @{@"name": stylus};
     [self postNotificationOnMainQueue:WDStylusDidDisconnectNotification userInfo:userInfo];
+}
+
+#pragma mark -- Jot Touch
+- (void)jotConnectionChange:(NSNotification *) note
+{
+    switch([[JotStylusManager sharedInstance] connectionStatus])
+    {
+        case JotConnectionStatusOff:
+            break;
+        case JotConnectionStatusScanning:
+            break;
+        case JotConnectionStatusPairing:
+            break;
+        case JotConnectionStatusConnected:
+            [self didConnectStylus:NSLocalizedString(@"Jot Touch", @"Jot Touch")];
+            break;
+        case JotConnectionStatusDisconnected:
+            [self didDisconnectStylus:NSLocalizedString(@"Jot Touch", @"Jot Touch")];
+            break;
+        default:
+            break;
+    }
+}
+
+-(void)jotStylusTouchBegan:(NSSet*)jotTouches{
+    // a Jot stylus has begun to draw on the screen
+}
+-(void)jotStylusTouchMoved:(NSSet*)jotTouches{
+    // a Jot stylus is moving on the screen
+}
+-(void)jotStylusTouchEnded:(NSSet*)jotTouches{
+    // a Jot stylus has ended normally on the screen
+}
+-(void)jotStylusTouchCancelled:(NSSet*)jotTouches{
+    // a stylus event has been cancelled on the screen
+}
+-(void)jotSuggestsToDisableGestures{
+    // the Jot Touch SDK has determined that the user’s palm is likely
+    // resting on the screen or the user is actively drawing with the
+    // Jot stylus, and we recommend to disable any other gestures
+    // that might be attached to that UIView, such as a pinch-to-zoom
+    // gesture
+}
+-(void)jotSuggestsToEnableGestures{
+    // The user’s palm has lifted and drawing has stopped, so it is
+    // safe to re-enable any other gestures on the UIView
 }
 
 #pragma mark -- Pogo Connect
@@ -255,9 +312,24 @@ NSString *WDBlueToothStateChangedNotification = @"WDBlueToothStateChangedNotific
     
     blueToothState = inBlueToothState;
     
-    if (blueToothState == WDBlueToothLowEnergy && !pogoManager) {
-        pogoManager = [T1PogoManager pogoManagerWithDelegate:self];
-        pogoManager.enablePenInputOverNetworkIfIncompatiblePad = YES;
+    if (blueToothState == WDBlueToothLowEnergy) {
+        if (!pogoManager) {
+            pogoManager = [T1PogoManager pogoManagerWithDelegate:self];
+            pogoManager.enablePenInputOverNetworkIfIncompatiblePad = YES;
+        }
+        
+        if (!jotManager) {
+            jotManager = [JotStylusManager sharedInstance];
+            
+            [[NSNotificationCenter defaultCenter] addObserver: self
+                                                     selector:@selector(jotConnectionChange:)
+                                                         name: JotStylusManagerDidChangeConnectionStatus
+                                                       object:nil];
+            jotManager.rejectMode = NO;
+            jotManager.enabled = YES;
+
+            
+        }
     }
     
     [[NSNotificationCenter defaultCenter] postNotificationName:WDBlueToothStateChangedNotification object:self];

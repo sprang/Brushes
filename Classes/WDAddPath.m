@@ -138,7 +138,7 @@
             WDLayer *layer = [painting layerWithUUID:self.layerUUID];
             [layer commitStroke:pathBounds_ color:path.color erase:erase undoable:undoable_];
         } else if ([path.nodes count] > 0) {
-            WDLog(@"Empty path bounds with path of length %d", [path.nodes count]);
+            WDLog(@"Empty path bounds with path of length %lu", (unsigned long)[path.nodes count]);
         }
         painting.activePath = nil;
     }
