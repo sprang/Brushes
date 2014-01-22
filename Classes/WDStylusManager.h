@@ -13,9 +13,13 @@
 // Pogo Connect (Blue Tiger)
 #import "T1PogoManager.h"
 
+// Jot Touch 4
+#import <JotTouchSDK/JotStylusManager.h>
+
 typedef enum {
     WDNoStylus = 0,
     WDPogoConnectStylus,
+    WDJotTouchStylus,
     WDMaxStylusTypes
 } WDStylusType;
 
@@ -35,6 +39,7 @@ typedef enum {
 @interface WDStylusManager : NSObject <CBCentralManagerDelegate>
 
 @property (nonatomic) T1PogoManager *pogoManager;
+@property (nonatomic) JotStylusManager *jotManager;
 @property (nonatomic, readonly) NSUInteger numberOfStylusTypes;
 @property (nonatomic) WDStylusType mode;
 @property (nonatomic) WDBlueToothState blueToothState;
