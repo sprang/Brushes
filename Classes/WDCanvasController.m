@@ -759,12 +759,16 @@
 
 - (void) stylusConnected:(NSNotification *)aNotification
 {
-    [self.actionNameView setConnectedDeviceName:(aNotification.userInfo)[@"name"]];
+    if ([self showActionNameView]) {
+        [self.actionNameView setConnectedDeviceName:(aNotification.userInfo)[@"name"]];
+    }
 }
-
+    
 - (void) stylusDisconnected:(NSNotification *)aNotification
 {
-    [self.actionNameView setDisconnectedDeviceName:(aNotification.userInfo)[@"name"]];
+    if ([self showActionNameView]) {
+        [self.actionNameView setDisconnectedDeviceName:(aNotification.userInfo)[@"name"]];
+    }
 }
 
 #pragma mark - Undo/Redo
@@ -1532,6 +1536,11 @@
     
     [nc addObserver:self selector:@selector(blueToothStatusChanged:) name:WDBlueToothStateChangedNotification object:nil];
 }
+    
+- (BOOL) showActionNameView
+{
+    return ![[NSUserDefaults standardUserDefaults] boolForKey:@"WDHideInfoDialogToggle"];
+}
 
 - (void) fadingOutActionNameView:(WDActionNameView *)inActionNameView
 {
@@ -1555,18 +1564,22 @@
     NSString *actionName = self.painting.undoManager.undoActionName;
     
     if (actionName && ![actionName isEqualToString:@""]) {
-        [self.actionNameView setUndoActionName:actionName];
+        if ([self showActionNameView]) {
+            [self.actionNameView setUndoActionName:actionName];
+        }
     } else {
         WDLog(@"Undo with no action name.");
     }
 }
-
+    
 - (void) willRedo:(NSNotification *)aNotification
 {
     NSString *actionName = self.painting.undoManager.redoActionName;
     
     if (actionName && ![actionName isEqualToString:@""]) {
-        [self.actionNameView setRedoActionName:actionName];
+        if ([self showActionNameView]) {
+            [self.actionNameView setUndoActionName:actionName];
+        }
     } else {
         WDLog(@"Redo with no action name.");
     }
