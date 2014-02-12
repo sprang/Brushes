@@ -26,6 +26,22 @@
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 			<key>Title</key>
+			<string>Hiding and Showing Visual Elements</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+			<key>Title</key>
+			<string>Hide Information Dialog</string>
+			<key>Key</key>
+			<string>WDHideInfoDialogToggle</string>
+			<key>DefaultValue</key>
+			<string>WDHideInfoDialogToggle</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>Title</key>
 			<string>About</string>
 			<key>FooterText</key>
 			<string>Brushes is free software. Get the source code here: github.com/sprang</string>
