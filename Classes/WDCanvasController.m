@@ -10,7 +10,6 @@
 //
 
 #import <Twitter/Twitter.h>
-#import <MessageUI/MessageUI.h>
 
 #import "UIImage+Resize.h"
 #import "UIImage+Additions.h"
@@ -329,10 +328,10 @@
     // could check this with [TWTweetComposeViewController canSendTweet], but the behavior seems okay without the check
     [shareSheet addButtonWithTitle:NSLocalizedString(@"Tweet", @"Tweet")
                              action:^(id sender) { [canvasController tweetPainting:sender]; }];
-    
-    if (self.document && [MFMailComposeViewController canSendMail]) {
-        [shareSheet addButtonWithTitle:NSLocalizedString(@"Email", @"Email")
-                                 action:^(id sender) { [canvasController emailPNG:sender]; }];
+
+    if (self.document) {
+        [shareSheet addButtonWithTitle:NSLocalizedString(@"Export", @"Export")
+                                action:^(id sender) { [canvasController exportPNG:sender]; }];
     }
     
     [shareSheet addCancelButton];
@@ -422,14 +421,14 @@
         
         [menus addObject:[WDMenuItem separatorItem]];
         
-        item = [WDMenuItem itemWithTitle:NSLocalizedString(@"Email JPEG", @"Email JPEG")
-                                  action:@selector(emailJPEG:) target:self];
+        item = [WDMenuItem itemWithTitle:NSLocalizedString(@"Export JPEG", @"Export JPEG")
+                                  action:@selector(exportJPEG:) target:self];
         [menus addObject:item];
         
-        item = [WDMenuItem itemWithTitle:NSLocalizedString(@"Email PNG", @"Email PNG")
-                                  action:@selector(emailPNG:) target:self];
+        item = [WDMenuItem itemWithTitle:NSLocalizedString(@"Export PNG", @"Export PNG")
+                                  action:@selector(exportPNG:) target:self];
         [menus addObject:item];
-        
+
         actionMenu_ = [[WDMenu alloc] initWithItems:menus];
         actionMenu_.delegate = self;
     }
@@ -541,10 +540,10 @@
 - (void) validateMenuItem:(WDMenuItem *)item
 {
     // ACTION
-    if (item.action == @selector(emailPNG:) ||
-        item.action == @selector(emailJPEG:))
+    if (item.action == @selector(exportPNG:) ||
+        item.action == @selector(exportJPEG:))
     {
-        item.enabled = [MFMailComposeViewController canSendMail];
+        item.enabled = (self.document != nil);
     }
     else if (item.action == @selector(duplicatePainting:))
              {
@@ -1657,27 +1656,6 @@
     //UIImageWriteToSavedPhotosAlbum(pngImage, self, nil, NULL);
 }
 
-// Dismisses the email composition interface when users tap Cancel or Send. Proceeds to update the message field with the result of the operation.
-- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error 
-{	
-	[controller dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (void) emailPainting:(id)sender mimeType:(NSString *)mimeType data:(NSData *)data
-{
-    MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
-    picker.mailComposeDelegate = self;
-    
-    NSString *subject = NSLocalizedString(@"Brushes Painting: ", @"Brushes Painting: ");
-    NSString *filename = self.document ? self.document.displayName : self.replay.paintingName;
-    subject = [subject stringByAppendingString:filename];
-    [picker setSubject:subject];    
-    
-    [picker addAttachmentData:data mimeType:mimeType fileName:filename];
-    
-    [self presentViewController:picker animated:YES completion:nil];
-}
-
 - (BOOL) canPasteImage
 {
     if (!self.isEditing) {
@@ -1735,16 +1713,37 @@
     [UIView commitAnimations];
 }
 
-- (void) emailPNG:(id)sender
+- (void) export:(id)sender format:(NSString *)format
 {
-    NSData *imageData = [canvas_.painting PNGRepresentationForCurrentState];
-    [self emailPainting:sender mimeType:@"image/png" data:imageData];
+    NSString *baseFilename = [self.document.fileURL.lastPathComponent stringByDeletingPathExtension];
+    NSString *filename = nil;
+
+    // Generates export file in requested format
+    if ([format isEqualToString:@"PNG"]) {
+        filename = [NSTemporaryDirectory() stringByAppendingPathComponent:[baseFilename stringByAppendingPathExtension:@"png"]];
+        [[canvas_.painting PNGRepresentationForCurrentState] writeToFile:filename atomically:YES];
+    } else if ([format isEqualToString:@"JPEG"]) {
+        filename = [NSTemporaryDirectory() stringByAppendingPathComponent:[baseFilename stringByAppendingPathExtension:@"jpg"]];
+        [[canvas_.painting JPEGRepresentationForCurrentState] writeToFile:filename atomically:YES];
+    }
+
+    // Passes exported file to UIDocumentInteractionController
+    exportFileUrl = [NSURL fileURLWithPath:filename];
+    if(exportFileUrl) {
+        self.documentInteractionController = [UIDocumentInteractionController interactionControllerWithURL:exportFileUrl];
+        [self.documentInteractionController setDelegate:self];
+        [self.documentInteractionController presentPreviewAnimated:YES];
+    }
 }
 
-- (void) emailJPEG:(id)sender
+- (void) exportJPEG:(id)sender
 {
-    NSData *imageData = [canvas_.painting JPEGRepresentationForCurrentState];
-    [self emailPainting:sender mimeType:@"image/jpeg" data:imageData];
+    [self export:sender format:@"JPEG"];
+}
+
+- (void) exportPNG:(id)sender
+{
+    [self export:sender format:@"PNG"];
 }
 
 #pragma mark - Interface Visibility
@@ -1886,6 +1885,21 @@
 - (UIView *) rotatingFooterView
 {
     return self.bottomBar;
+}
+
+#pragma mark - UIDocumentInteractionController
+
+- (UIViewController *) documentInteractionControllerViewControllerForPreview: (UIDocumentInteractionController *) controller {
+    return self;
+}
+
+- (void)documentInteractionControllerDidEndPreview:(UIDocumentInteractionController *)controller
+{
+    // Clean up by removing generated file
+    NSError *error;
+    if(exportFileUrl) {
+        [[NSFileManager defaultManager] removeItemAtURL:exportFileUrl error:&error];
+    }
 }
 
 @end
