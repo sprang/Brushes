@@ -14,7 +14,6 @@
 #import "WDActionSheet.h"
 #import "WDBar.h"
 #import "WDDocumentReplay.h"
-#import <MessageUI/MFMailComposeViewController.h>
 
 typedef enum {
     WDInterfaceModeHidden, // all adornments are hidden
@@ -42,8 +41,7 @@ typedef enum {
 @class WDUnlockView;
 
 @interface WDCanvasController : UIViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate,
-                                                    MFMailComposeViewControllerDelegate, UIPopoverControllerDelegate,
-                                                        WDActionSheetDelegate, WDDocumentReplayDelegate, WDActionNameViewDelegate>
+                                                    UIPopoverControllerDelegate, WDActionSheetDelegate, WDDocumentReplayDelegate, WDActionNameViewDelegate, UIDocumentInteractionControllerDelegate>
 {
     WDBarItem           *album_;
     WDBarItem           *undo_;
@@ -64,6 +62,8 @@ typedef enum {
 
     WDHueSaturationController   *hueController_;
     WDColorBalanceController   *balanceController_;
+
+    NSURL *exportFileUrl;
 }
 
 @property (nonatomic) WDDocument *document;
@@ -98,6 +98,7 @@ typedef enum {
 @property (nonatomic) BOOL wasPlayingBeforeRotation;
 
 @property (nonatomic) WDArtStoreController *artStoreController;
+@property (strong, nonatomic) UIDocumentInteractionController *documentInteractionController;
 
 - (void) updateTitle;
 - (void) hidePopovers;
