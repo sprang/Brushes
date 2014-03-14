@@ -46,8 +46,19 @@
 #import "WDUtilities.h"
 #import "WDUnlockView.h"
 
+#import "AVFoundation/AVFoundation.h"
+#import "AVFoundation/AVAssetWriter.h"
+#import "CoreMedia/CMTime.h"
+#import <AssetsLibrary/AssetsLibrary.h>
+
 #define RESCALE_REPLAY          0
 #define kNavBarFixedWidth       20
+
+@interface WDCanvasController ()
+@property AVAssetWriter *videoWriter;
+@property NSString *videoFileName;
+@property (nonatomic, assign) BOOL replayingForExport;
+@end
 
 @implementation WDCanvasController
 
@@ -316,6 +327,9 @@
     [shareSheet addButtonWithTitle:NSLocalizedString(@"Copy to Pasteboard", @"Copy to Pasteboard")
                              action:^(id sender) { [canvasController copyPainting:sender]; }];
     
+    [shareSheet addButtonWithTitle:NSLocalizedString(@"Video", @"Video")
+                            action:^(id sender) { [canvasController exportVideo:sender]; }];
+    
     if (self.document) {
         [shareSheet addButtonWithTitle:NSLocalizedString(@"Duplicate", @"Duplicate")
                                 action:^(id sender) { [canvasController duplicatePainting:sender]; }];
@@ -400,6 +414,11 @@
         
         item = [WDMenuItem itemWithTitle:NSLocalizedString(@"Copy to Pasteboard", @"Copy to Pasteboard")
                                   action:@selector(copyPainting:) target:self];
+        [menus addObject:item];
+        
+        item = [WDMenuItem itemWithTitle:NSLocalizedString(@"Video", @"Video")
+                                  action:@selector(exportVideo:) target:self];
+        
         [menus addObject:item];
         
         [menus addObject:[WDMenuItem separatorItem]];
@@ -1369,6 +1388,37 @@
 - (void) replayFinished
 {
     [self performSelector:@selector(showInterface) withObject:nil afterDelay:0];
+
+    if (self.replayingForExport) {
+        self.replayingForExport = NO;
+
+        NSString *home = NSHomeDirectory();
+        NSString *docs = [home stringByAppendingPathComponent:@"Documents"];
+        //NSString *path = [docs stringByAppendingPathComponent:[NSString stringWithFormat:@"%ld.jpg", (long)frameNumber]];
+        //NSString *path1 = [docs stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_%ld.jpg", self.replay.paintingName, (long)self.replay.frameCount]];
+        
+        NSMutableArray *imgArray = [[NSMutableArray alloc] init];
+        NSMutableArray *imgPathArray = [[NSMutableArray alloc] init];
+        
+        
+        UIImage *img = [[UIImage alloc] init];
+        
+        for (int i=0;i<self.replay.frameCount;i++)
+        {
+            NSString *path = [docs stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_%ld.jpg", self.replay.paintingName, (long)i]];
+            img = [UIImage imageWithContentsOfFile:path];
+            [imgArray addObject:img];
+            [imgPathArray addObject:path];
+            NSLog(@"%ld", (long)imgArray.count);
+        }
+        
+        [self writeImagesAsMovie:imgPathArray toPath:docs];
+        
+        [self finishExport];
+        
+        [self saveToCameraRoll];
+    }
+
 }
 
 - (void) replayError
@@ -1676,6 +1726,178 @@
     [picker addAttachmentData:data mimeType:mimeType fileName:filename];
     
     [self presentViewController:picker animated:YES completion:nil];
+}
+
+- (void) exportVideo:(id)sender
+{
+    self.replayingForExport = YES;
+    //manually replay again in case the painting was never replayed or cleared out
+    [self replayPainting:sender];
+    
+
+    
+}
+
+- (void) saveToCameraRoll {
+    // save the movie to the camera roll
+	ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+	//NSLog(@"writing \"%@\" to photos album", outputURL);
+    //			  outputURL = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/%llu.mp4", NSTemporaryDirectory(), mach_absolute_time()]];
+	__block NSURL *outputURL = [NSURL fileURLWithPath:_videoFileName];
+    [library writeVideoAtPathToSavedPhotosAlbum:outputURL
+								completionBlock:^(NSURL *assetURL, NSError *error) {
+									if (error) {
+										NSLog(@"assets library failed (%@)", error);
+									}
+									else {
+										//[[NSFileManager defaultManager] removeItemAtURL:outputURL error:&error];
+										if (error)
+											NSLog(@"Couldn't remove temporary movie file \"%@\"", outputURL);
+									}
+									outputURL = nil;
+								}];
+}
+
+- (void) finishExport {
+    [_videoWriter finishWriting];
+}
+
+- (void) writeImagesAsMovie:(NSArray *)array toPath:(NSString *)path {
+    //NSString *documents = [NSSearchPathForDirectoriesInDomains(NSDocumentationDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    //documents = [documents stringByAppendingPathComponent:currentWorkspace];
+    
+    _videoFileName = [path stringByAppendingString:[NSString stringWithFormat:@"/%@.mp4", self.replay.paintingName]];
+    
+    NSString *filename = [array objectAtIndex:12];
+    BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath:filename];
+    NSLog(@"%@ exists: %d", filename, fileExists);
+    UIImage *first = [UIImage imageWithContentsOfFile:filename];
+    
+    CGSize frameSize = first.size;
+    
+    NSError *error = nil;
+    
+    //_videoWriter = [[AVAssetWriter alloc] initWithURL:[NSURL fileURLWithPath:_videoFileName] fileType:AVFileTypeQuickTimeMovie error:&error];
+    _videoWriter = [[AVAssetWriter alloc] initWithURL:[NSURL fileURLWithPath:_videoFileName] fileType:AVFileTypeMPEG4 error:&error];
+    NSDictionary *videoSettings = [NSDictionary dictionaryWithObjectsAndKeys: AVVideoCodecH264,
+                                   AVVideoCodecKey,
+                                   [NSNumber numberWithInteger:frameSize.width], AVVideoWidthKey,
+                                   [NSNumber numberWithInteger:frameSize.height], AVVideoHeightKey,
+                                   nil];
+    
+    AVAssetWriterInput *writerInput = [AVAssetWriterInput
+                                       assetWriterInputWithMediaType:AVMediaTypeVideo
+                                       outputSettings:videoSettings];
+    
+    NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
+    [attributes setObject:[NSNumber numberWithUnsignedInteger:kCVPixelFormatType_32ARGB] forKey:(NSString*)kCVPixelBufferPixelFormatTypeKey];
+    [attributes setObject:[NSNumber numberWithUnsignedInteger:frameSize.width] forKey:(NSString*)kCVPixelBufferWidthKey];
+    [attributes setObject:[NSNumber numberWithUnsignedInteger:frameSize.height] forKey:(NSString*)kCVPixelBufferHeightKey];
+    
+    AVAssetWriterInputPixelBufferAdaptor *adaptor = [AVAssetWriterInputPixelBufferAdaptor
+                                                     assetWriterInputPixelBufferAdaptorWithAssetWriterInput:writerInput
+                                                     sourcePixelBufferAttributes:attributes];
+    
+    [_videoWriter addInput:writerInput];
+    
+    writerInput.expectsMediaDataInRealTime = YES;
+    
+    // need to test this in landscape mode
+    writerInput.transform = CGAffineTransformMakeRotation(M_PI);
+    
+    BOOL start = [_videoWriter startWriting];
+    NSLog(@"Session started? %d", start);
+    [_videoWriter startSessionAtSourceTime:kCMTimeZero];
+    CVPixelBufferRef buffer = NULL;
+    
+    int fps = 5; //(int)fpsSlider.value;
+    
+    int i = 0;
+    for (NSString *filename in array) {
+        if (adaptor.assetWriterInput.readyForMoreMediaData) {
+            i++;
+            NSLog(@"inside for look %d %@ ", i,filename);
+            CMTime frameTime = CMTimeMake(1, fps);
+            CMTime lastTime = CMTimeMake(i, fps);
+            CMTime presentTime = CMTimeAdd(lastTime, frameTime);
+            
+            //NSString *filePath = [documents stringByAppendingPathComponent:filename];
+            
+            UIImage *imgFrame = [UIImage imageWithContentsOfFile:filename] ;
+            buffer = [self pixelBufferFromCGImage:[imgFrame CGImage]];
+            BOOL result = [adaptor appendPixelBuffer:buffer withPresentationTime:presentTime];
+            
+            if (result == NO) //failes on 3GS, but works on iphone 4
+            {
+                NSLog(@"failed to append buffer");
+                NSLog(@"The error is %@", [_videoWriter error]);
+            }
+            if(buffer)
+                CVBufferRelease(buffer);
+            
+            [NSThread sleepForTimeInterval:0.05];
+        }
+        else
+        {
+            NSLog(@"error");
+            i--;
+        }
+        [NSThread sleepForTimeInterval:0.02];
+    }
+    
+    //Finish the session:
+    [writerInput markAsFinished];
+
+    CVPixelBufferPoolRelease(adaptor.pixelBufferPool);
+    //[videoWriter release];
+    //[writerInput release];
+    
+}
+
+- (CVPixelBufferRef) pixelBufferFromCGImage: (CGImageRef) image
+{
+    NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys:
+                             [NSNumber numberWithBool:YES], kCVPixelBufferCGImageCompatibilityKey,
+                             [NSNumber numberWithBool:YES], kCVPixelBufferCGBitmapContextCompatibilityKey,
+                             nil];
+    CVPixelBufferRef pxbuffer = NULL;
+    
+    CVPixelBufferCreate(kCFAllocatorDefault, CGImageGetWidth(image),
+                        CGImageGetHeight(image), kCVPixelFormatType_32ARGB, (__bridge CFDictionaryRef) options,
+                        &pxbuffer);
+    
+    CVPixelBufferLockBaseAddress(pxbuffer, 0);
+    void *pxdata = CVPixelBufferGetBaseAddress(pxbuffer);
+    
+    CGColorSpaceRef rgbColorSpace = CGColorSpaceCreateDeviceRGB();
+    CGContextRef context = CGBitmapContextCreate(pxdata, CGImageGetWidth(image),
+                                                 CGImageGetHeight(image), 8, 4*CGImageGetWidth(image), rgbColorSpace,
+                                                 kCGImageAlphaNoneSkipFirst);
+    
+    CGContextConcatCTM(context, CGAffineTransformMakeRotation(0));
+    
+    CGAffineTransform flipVertical = CGAffineTransformMake(
+                                                           1, 0, 0, -1, 0, CGImageGetHeight(image)
+                                                           );
+    CGContextConcatCTM(context, flipVertical);
+    
+    
+    
+    CGAffineTransform flipHorizontal = CGAffineTransformMake(
+                                                             -1.0, 0.0, 0.0, 1.0, CGImageGetWidth(image), 0.0
+                                                             );
+    
+    CGContextConcatCTM(context, flipHorizontal);
+    
+    
+    CGContextDrawImage(context, CGRectMake(0, 0, CGImageGetWidth(image),
+                                           CGImageGetHeight(image)), image);
+    CGColorSpaceRelease(rgbColorSpace);
+    CGContextRelease(context);
+    
+    CVPixelBufferUnlockBaseAddress(pxbuffer, 0);
+    
+    return pxbuffer;
 }
 
 - (BOOL) canPasteImage
