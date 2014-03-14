@@ -42,6 +42,7 @@
 @synthesize paused;
 @synthesize replayDelegate;
 @synthesize scale = scale_;
+@synthesize forVideo;
 
 - (id) initWithDocument:(WDDocument *)document includeUndos:(BOOL)undos scale:(float)scale
 {
@@ -244,17 +245,20 @@
     }
     
     // converting each step's painting to an image.
-    UIImage *img = [painting imageForCurrentState];
-    NSData *data = UIImageJPEGRepresentation(img, 1.0);
+    // only when export to video, not for replay
+    if (self.forVideo) {
+        UIImage *img = [painting imageForCurrentState];
+        NSData *data = UIImageJPEGRepresentation(img, 1.0);
 
-    NSString *home = NSHomeDirectory();
-    NSString *docs = [home stringByAppendingPathComponent:@"Documents"];
-    //NSString *path = [docs stringByAppendingPathComponent:[NSString stringWithFormat:@"%ld.jpg", (long)frameNumber]];
-    NSString *path = [docs stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_%ld.jpg", self.paintingName, (long)self.frameCount]];
+        NSString *home = NSHomeDirectory();
+        NSString *docs = [home stringByAppendingPathComponent:@"Documents"];
+        //NSString *path = [docs stringByAppendingPathComponent:[NSString stringWithFormat:@"%ld.jpg", (long)frameNumber]];
+        NSString *path = [docs stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_%ld.jpg", self.paintingName, (long)self.frameCount]];
 
-    // write images to path
-    [data writeToFile:path atomically:YES];
-
+        // write images to path
+        [data writeToFile:path atomically:YES];
+    }
+    
     frameNumber += 1;
     self.frameCount = frameNumber;
 

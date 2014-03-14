@@ -1369,6 +1369,7 @@
         #endif
 
         self.replay = [[WDDocumentReplay alloc] initWithDocument:self.document includeUndos:NO scale:scale];
+        self.replay.forVideo = YES;
         self.document = nil;
         
         self.canvas.painting = replay.painting;
@@ -1731,11 +1732,9 @@
 - (void) exportVideo:(id)sender
 {
     self.replayingForExport = YES;
+
     //manually replay again in case the painting was never replayed or cleared out
     [self replayPainting:sender];
-    
-
-    
 }
 
 - (void) saveToCameraRoll {
@@ -1750,7 +1749,7 @@
 										NSLog(@"assets library failed (%@)", error);
 									}
 									else {
-										//[[NSFileManager defaultManager] removeItemAtURL:outputURL error:&error];
+										[[NSFileManager defaultManager] removeItemAtURL:outputURL error:&error];
 										if (error)
 											NSLog(@"Couldn't remove temporary movie file \"%@\"", outputURL);
 									}
@@ -1849,9 +1848,6 @@
     [writerInput markAsFinished];
 
     CVPixelBufferPoolRelease(adaptor.pixelBufferPool);
-    //[videoWriter release];
-    //[writerInput release];
-    
 }
 
 - (CVPixelBufferRef) pixelBufferFromCGImage: (CGImageRef) image
