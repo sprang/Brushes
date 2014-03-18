@@ -1369,7 +1369,8 @@
         #endif
 
         self.replay = [[WDDocumentReplay alloc] initWithDocument:self.document includeUndos:NO scale:scale];
-        self.replay.forVideo = YES;
+        
+        //self.replay.forVideo = forVideo;
         self.document = nil;
         
         self.canvas.painting = replay.painting;
@@ -1443,7 +1444,7 @@
     if (!playButton) {
         playButton = [UIButton buttonWithType:UIButtonTypeCustom];
         
-        [playButton addTarget:self action:@selector(replayPainting:) forControlEvents:UIControlEventTouchUpInside];
+        [playButton addTarget:self action:@selector(replayPainting: ) forControlEvents:UIControlEventTouchUpInside];
         playButton.opaque = NO;
         playButton.backgroundColor = nil;
         UIImage *image = [UIImage imageNamed:@"play.png"];
