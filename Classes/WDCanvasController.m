@@ -1353,8 +1353,10 @@
 
 - (void) replayPainting:(id)obj
 {
+    
     self.interfaceMode = WDInterfaceModeHidden;
-
+    NSString *fromVideoTag = NSStringFromClass([obj class]);
+    NSLog(@"%@", fromVideoTag);
     if (!self.replay) {
         float scale = 1.0f;
         
@@ -1370,7 +1372,6 @@
 
         self.replay = [[WDDocumentReplay alloc] initWithDocument:self.document includeUndos:NO scale:scale];
         
-        //self.replay.forVideo = forVideo;
         self.document = nil;
         
         self.canvas.painting = replay.painting;
@@ -1383,6 +1384,9 @@
         [self.replay restart];
         self.canvas.painting = replay.painting;
     }
+    
+    if ([fromVideoTag isEqualToString:(@"WDTagProvider")])
+        replay.forVideo = true;
     
     [replay play];
 }
@@ -1834,6 +1838,12 @@
             }
             if(buffer)
                 CVBufferRelease(buffer);
+            
+            //TODO: remove the imgage Frame once in the buffer, to greatly reduce the memory and storage space
+            __block NSURL *outputURL = [NSURL fileURLWithPath:filename];
+            [[NSFileManager defaultManager] removeItemAtURL:outputURL error:&error];
+            if (error)
+                NSLog(@"Couldn't remove temporary movie file \"%@\"", outputURL);
             
             [NSThread sleepForTimeInterval:0.05];
         }

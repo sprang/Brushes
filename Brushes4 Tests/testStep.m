@@ -33,7 +33,7 @@
 }
 
 - (void)testStep1 {
-    WDDocumentReplay *replay = [WDDocumentReply init];
+    //WDDocumentReplay *replay = [WDDocumentReply init];
 }
 
 @end

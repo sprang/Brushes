@@ -253,7 +253,7 @@
         NSString *home = NSHomeDirectory();
         NSString *docs = [home stringByAppendingPathComponent:@"Documents"];
         //NSString *path = [docs stringByAppendingPathComponent:[NSString stringWithFormat:@"%ld.jpg", (long)frameNumber]];
-        NSString *path = [docs stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_%ld.jpg", self.paintingName, (long)self.frameCount]];
+        NSString *path = [docs stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_%ld.jpg", self.paintingName, (long)frameNumber]];
 
         // write images to path
         [data writeToFile:path atomically:YES];
