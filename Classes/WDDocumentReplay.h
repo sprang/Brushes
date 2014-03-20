@@ -32,6 +32,8 @@
 @property (nonatomic, weak) id<WDDocumentReplayDelegate> replayDelegate;
 @property (nonatomic) int errorCount;
 @property (nonatomic, assign) float scale;
+@property (nonatomic) int frameCount;
+@property (nonatomic, assign) BOOL forVideo;
 
 - (id) initWithDocument:(WDDocument *)document includeUndos:(BOOL)undos scale:(float)scale;
 - (void) play;
@@ -39,5 +41,6 @@
 - (void) restart;
 - (BOOL) isFinished;
 - (BOOL) isPlaying;
+- (void) step;
 
 @end

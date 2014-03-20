@@ -32,6 +32,7 @@
     int animationStep_;
     int lastAnimationStep_;
     NSDate *startTime_;
+    NSInteger frameNumber;
 }
 
 @synthesize delay;
@@ -41,6 +42,7 @@
 @synthesize paused;
 @synthesize replayDelegate;
 @synthesize scale = scale_;
+@synthesize forVideo;
 
 - (id) initWithDocument:(WDDocument *)document includeUndos:(BOOL)undos scale:(float)scale
 {
@@ -124,7 +126,12 @@
         [[WDSleepTimer sharedInstance] disableTimer:self];
         self.paused = NO;
         startTime_ = [NSDate date];
+        
+        //resetting the index so that the images won't be saved incrementally
+        frameNumber = 0;
+        
         [self performSelector:@selector(step) withObject:nil afterDelay:0];
+        NSLog(@"%ld", (long)self.frameCount);
     }
 }
 
@@ -237,6 +244,24 @@
         change_ = nil;
     }
     
+    // converting each step's painting to an image.
+    // only when export to video, not for replay
+    if (self.forVideo) {
+        UIImage *img = [painting imageForCurrentState];
+        NSData *data = UIImageJPEGRepresentation(img, 1.0);
+
+        NSString *home = NSHomeDirectory();
+        NSString *docs = [home stringByAppendingPathComponent:@"Documents"];
+        //NSString *path = [docs stringByAppendingPathComponent:[NSString stringWithFormat:@"%ld.jpg", (long)frameNumber]];
+        NSString *path = [docs stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_%ld.jpg", self.paintingName, (long)frameNumber]];
+
+        // write images to path
+        [data writeToFile:path atomically:YES];
+    }
+    
+    frameNumber += 1;
+    self.frameCount = frameNumber;
+
     [self performSelector:@selector(step) withObject:nil afterDelay:self.delay];
 }
 
