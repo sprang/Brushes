@@ -1,5 +1,5 @@
 //
-//  WDColorBalanceController.m
+//  WDColorAdjustmentController.m
 //  Brushes
 //
 //  This Source Code Form is subject to the terms of the Mozilla Public
