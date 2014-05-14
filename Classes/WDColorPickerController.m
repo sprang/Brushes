@@ -34,6 +34,8 @@
 @synthesize secondCell;
 @synthesize matrix;
 
+- (void) dismissViewController:(UIViewController *)viewController {}    // for delegate
+
 - (IBAction)dismiss:(id)sender
 {
     [[self presentingViewController] dismissViewControllerAnimated:NO completion:nil];
