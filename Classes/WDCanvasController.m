@@ -45,6 +45,7 @@
 #import "WDUndoChange.h"
 #import "WDUtilities.h"
 #import "WDUnlockView.h"
+#import "NSString+Drawing.h"
 
 #define RESCALE_REPLAY          0
 #define kNavBarFixedWidth       20
@@ -871,10 +872,13 @@
         
         NSString *label = [NSString stringWithFormat:@"%lu", (unsigned long)index];
         
+        NSMutableParagraphStyle *paraStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+        paraStyle.lineBreakMode = NSLineBreakByClipping;
+        paraStyle.alignment = NSTextAlignmentCenter;
+        
         [label drawInRect:CGRectOffset(layerBox, 0, 1)
-                 withFont:[UIFont boldSystemFontOfSize:13]
-            lineBreakMode:UILineBreakModeClip
-                alignment:UITextAlignmentCenter];
+           withAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:13],
+                            NSParagraphStyleAttributeName:paraStyle}];
     }
 
     UIImage *result = UIGraphicsGetImageFromCurrentImageContext();

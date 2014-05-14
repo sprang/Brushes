@@ -405,6 +405,7 @@
 		6BF9986815A67C7100AFBB3A /* merge@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6BF9986615A67C7000AFBB3A /* merge@2x.png */; };
 		6BF9986F15A776EC00AFBB3A /* WDCellSelectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BF9986E15A776EC00AFBB3A /* WDCellSelectionView.m */; };
 		6BFA802C1249CEDB00D1749C /* WDLayerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BFA802B1249CEDB00D1749C /* WDLayerCell.m */; };
+		AE815F8E19231421003D7056 /* NSString+Drawing.m in Sources */ = {isa = PBXBuildFile; fileRef = AE815F8D19231421003D7056 /* NSString+Drawing.m */; };
 		C01FCF5008A9545400542486 /* WDSynchronizer.m in Sources */ = {isa = PBXBuildFile; fileRef = C01FCF5008A9545400542485 /* WDSynchronizer.m */; };
 		C01FCF5008A954540054248D /* WDAddLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = C01FCF5008A954540054248C /* WDAddLayer.m */; };
 		C01FCF5008A9545400542490 /* WDDeleteLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = C01FCF5008A954540054248F /* WDDeleteLayer.m */; };
@@ -972,6 +973,8 @@
 		6BF9986E15A776EC00AFBB3A /* WDCellSelectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WDCellSelectionView.m; sourceTree = "<group>"; };
 		6BFA802A1249CEDB00D1749C /* WDLayerCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WDLayerCell.h; sourceTree = "<group>"; };
 		6BFA802B1249CEDB00D1749C /* WDLayerCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WDLayerCell.m; sourceTree = "<group>"; };
+		AE815F8C19231421003D7056 /* NSString+Drawing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Drawing.h"; sourceTree = "<group>"; };
+		AE815F8D19231421003D7056 /* NSString+Drawing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Drawing.m"; sourceTree = "<group>"; };
 		C01FCF5008A9545400542484 /* WDSynchronizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WDSynchronizer.h; sourceTree = "<group>"; };
 		C01FCF5008A9545400542485 /* WDSynchronizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WDSynchronizer.m; sourceTree = "<group>"; };
 		C01FCF5008A9545400542487 /* WDDocumentChange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WDDocumentChange.h; sourceTree = "<group>"; };
@@ -1591,6 +1594,8 @@
 		6BCD535F1240001D002FCB27 /* Additions */ = {
 			isa = PBXGroup;
 			children = (
+				AE815F8C19231421003D7056 /* NSString+Drawing.h */,
+				AE815F8D19231421003D7056 /* NSString+Drawing.m */,
 				5D1CF74B138C7BAB008979B3 /* DBMetadata+Additions.h */,
 				5D1CF74C138C7BAB008979B3 /* DBMetadata+Additions.m */,
 				6B40CD92181FCFFE00004FB2 /* NSArray+Additions.h */,
@@ -2354,6 +2359,7 @@
 				6B40CE3E181FD10F00004FB2 /* WDStampGenerator.m in Sources */,
 				6B5F0F5C1600289A00E44FB8 /* WDStylusController.m in Sources */,
 				6B5F0F611600447B00E44FB8 /* WDStylusManager.m in Sources */,
+				AE815F8E19231421003D7056 /* NSString+Drawing.m in Sources */,
 				6B966406160BF35700B9734A /* WDStylusTableCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
