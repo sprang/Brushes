@@ -501,8 +501,8 @@ const float         kWDBarItemShadowOpacity = 0.9f;
         label.backgroundColor = nil;
         label.opaque = NO;
         label.textColor = [UIColor whiteColor];
-        label.textAlignment = UITextAlignmentCenter;
-        label.lineBreakMode = UILineBreakModeMiddleTruncation;
+        label.textAlignment = NSTextAlignmentCenter;
+        label.lineBreakMode = NSLineBreakByTruncatingMiddle;
         label.font = [self portraitFont];
         label.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         

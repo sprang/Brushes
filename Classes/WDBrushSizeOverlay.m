@@ -35,7 +35,7 @@
     label.opaque = NO;
     label.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:19.0f];
     label.textColor = [UIColor whiteColor];
-    label.textAlignment = UITextAlignmentCenter;
+    label.textAlignment = NSTextAlignmentCenter;
     label.text = @"512 px";
     label.shadowColor = [UIColor blackColor];
     label.shadowOffset = CGSizeMake(0, 1);

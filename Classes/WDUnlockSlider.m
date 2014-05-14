@@ -54,7 +54,7 @@
     label.backgroundColor = nil;
     label.text = NSLocalizedString(@"slide to edit", @"slide to edit");
     label.font = [UIFont systemFontOfSize:24.0];
-    label.textAlignment = UITextAlignmentCenter;
+    label.textAlignment = NSTextAlignmentCenter;
     label.textColor = [UIColor whiteColor];
     
     label.layer.shadowColor = [UIColor blackColor].CGColor;
