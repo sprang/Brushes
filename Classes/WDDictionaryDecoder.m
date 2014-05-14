@@ -39,6 +39,7 @@
 
 - (void) dealloc
 {
+#ifndef OS_OBJECT_USE_OBJC
     if (dispatchQueue_) {
         dispatch_release(dispatchQueue_);
     }
@@ -46,6 +47,7 @@
     if (dispatchGroup_) {
         dispatch_release(dispatchGroup_);
     }
+#endif
 }
 
 - (WDCodingProgress *) progress

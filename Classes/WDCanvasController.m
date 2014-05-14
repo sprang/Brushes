@@ -81,7 +81,9 @@
         return nil;
     }
     
+#ifndef __IPHONE_7_0
     [self setWantsFullScreenLayout:YES];
+#endif
     
     return self;
 }
