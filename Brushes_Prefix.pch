@@ -7,3 +7,7 @@
     #import <QuartzCore/QuartzCore.h>
     #import <UIKit/UIKit.h>
 #endif
+
+#ifdef __IPHONE_7_0
+#define contentSizeForViewInPopover preferredContentSize
+#endif
