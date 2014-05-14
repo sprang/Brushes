@@ -11,3 +11,13 @@
 #ifdef __IPHONE_7_0
 #define contentSizeForViewInPopover preferredContentSize
 #endif
+
+#if __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_6_1
+#define kImageAlphaNone               (CGBitmapInfo)kCGImageAlphaNone
+#define kImageAlphaPremultipliedFirst (CGBitmapInfo)kCGImageAlphaPremultipliedFirst
+#define kImageAlphaPremultipliedLast  (CGBitmapInfo)kCGImageAlphaPremultipliedLast
+#else
+#define kImageAlphaNone               kCGImageAlphaNone
+#define kImageAlphaPremultipliedFirst kCGImageAlphaPremultipliedFirst
+#define kImageAlphaPremultipliedLast  kCGImageAlphaPremultipliedLast
+#endif

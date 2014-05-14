@@ -189,7 +189,7 @@
     
     CGColorSpaceRef colorSpaceRef = CGColorSpaceCreateDeviceRGB();
     cgContext = CGBitmapContextCreate(pixels, backingWidth, backingHeight, 8, backingWidth * 4,
-                                             colorSpaceRef, kCGBitmapByteOrderDefault | kCGImageAlphaPremultipliedLast);
+                                             colorSpaceRef, kCGBitmapByteOrderDefault | kImageAlphaPremultipliedLast);
     CGColorSpaceRelease(colorSpaceRef);
     
     if (self.path) {

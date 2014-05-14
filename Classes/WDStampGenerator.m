@@ -120,7 +120,7 @@ static NSString *WDUUIDKey = @"uuid";
 	void    *data = calloc(sizeof(UInt8), width * height);
     
     CGColorSpaceRef colorspace = CGColorSpaceCreateDeviceGray();
-	CGContextRef context = CGBitmapContextCreate(data, width, height, 8, rowByteSize, colorspace, kCGImageAlphaNone);
+	CGContextRef context = CGBitmapContextCreate(data, width, height, 8, rowByteSize, colorspace, kImageAlphaNone);
     CGColorSpaceRelease(colorspace);
     
     // make our bitmap context the current context
@@ -205,7 +205,7 @@ static NSString *WDUUIDKey = @"uuid";
     size_t height = imageMask.size.height;
     
     CGColorSpaceRef colorspace = CGColorSpaceCreateDeviceRGB();
-    CGContextRef ctx = CGBitmapContextCreate(NULL, width, height, 8, width*4, colorspace, kCGImageAlphaPremultipliedLast);
+    CGContextRef ctx = CGBitmapContextCreate(NULL, width, height, 8, width*4, colorspace, kImageAlphaPremultipliedLast);
     
     CGColorSpaceRelease(colorspace);
     CGContextClipToMask(ctx, CGRectMake(0, 0, width, height), imageMask.CGImage);
@@ -342,7 +342,7 @@ static NSString *WDUUIDKey = @"uuid";
         }
         
         CGColorSpaceRef colorspace = CGColorSpaceCreateDeviceGray();
-        CGContextRef ctx = CGBitmapContextCreate(NULL, self.size.width, self.size.height, 8, self.size.width, colorspace, kCGImageAlphaNone);
+        CGContextRef ctx = CGBitmapContextCreate(NULL, self.size.width, self.size.height, 8, self.size.width, colorspace, kImageAlphaNone);
         
         NSArray *colors = @[(__bridge id) [UIColor whiteColor].CGColor, (__bridge id) [UIColor blackColor].CGColor];
         const CGFloat locations[] = {0.0, 1.0};

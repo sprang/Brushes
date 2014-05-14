@@ -116,7 +116,7 @@
     UInt8 *data = malloc(height * rowByteSize);
     
     CGColorSpaceRef colorSpaceRef = CGColorSpaceCreateDeviceRGB();
-    CGContextRef context = CGBitmapContextCreate(data, width, height, 8, rowByteSize, colorSpaceRef, kCGImageAlphaPremultipliedLast);
+    CGContextRef context = CGBitmapContextCreate(data, width, height, 8, rowByteSize, colorSpaceRef, kImageAlphaPremultipliedLast);
     CGContextSetBlendMode(context, kCGBlendModeCopy);
     CGContextDrawImage(context, CGRectMake(0, 0, width, height), image);
     CGContextRelease(context);

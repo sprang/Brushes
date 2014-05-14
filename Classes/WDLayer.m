@@ -460,7 +460,7 @@ static NSString *WDVisibleKey = @"visible";
 
             CGColorSpaceRef colorSpaceRef = CGColorSpaceCreateDeviceRGB();
             CGContextRef ctx = CGBitmapContextCreate(pixels, width, height, 8, width*4,
-                                                     colorSpaceRef, kCGBitmapByteOrderDefault | kCGImageAlphaPremultipliedLast);
+                                                     colorSpaceRef, kCGBitmapByteOrderDefault | kImageAlphaPremultipliedLast);
             CGImageRef imageRef = CGBitmapContextCreateImage(ctx);
 
             thumbnail_ = [[UIImage alloc] initWithCGImage:imageRef scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];

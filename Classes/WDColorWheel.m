@@ -202,7 +202,7 @@
     }
     
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-    CGContextRef ctx = CGBitmapContextCreate(data, diameter, diameter, 8, bpr, colorSpace, kCGImageAlphaPremultipliedFirst);
+    CGContextRef ctx = CGBitmapContextCreate(data, diameter, diameter, 8, bpr, colorSpace, kImageAlphaPremultipliedFirst);
     CGColorSpaceRelease(colorSpace);
     
     wheelImage_ = CGBitmapContextCreateImage(ctx);

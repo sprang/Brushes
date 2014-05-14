@@ -137,7 +137,7 @@ static BOOL powerOf2(int x)
     CGColorSpaceRef colorSpaceRef = isAlpha ? CGColorSpaceCreateDeviceGray() : CGColorSpaceCreateDeviceRGB();
 	CGContextRef context = CGBitmapContextCreate(data_, width_, height_, 8, rowByteSize_,
                                                  colorSpaceRef,
-                                                 (isAlpha ? kCGImageAlphaNone : kCGImageAlphaPremultipliedLast));
+                                                 (isAlpha ? kImageAlphaNone : kImageAlphaPremultipliedLast));
 	CGContextSetBlendMode(context, kCGBlendModeCopy);
     CGContextDrawImage(context, CGRectMake(0.0, 0.0, width_, height_), image);
 	CGContextRelease(context);
