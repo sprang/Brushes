@@ -41,7 +41,7 @@
     frame.size.height /= 2;
     self.titleLabel = [[UILabel alloc] initWithFrame:frame];
     titleLabel.font = [UIFont boldSystemFontOfSize:20.0f];
-    titleLabel.textAlignment = UITextAlignmentCenter;
+    titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.backgroundColor = nil;
     titleLabel.opaque = NO;
     titleLabel.textColor = [UIColor whiteColor];
@@ -52,7 +52,7 @@
     frame = CGRectOffset(frame, 0, CGRectGetHeight(frame));
     self.messageLabel = [[UILabel alloc] initWithFrame:frame];
     messageLabel.font = [UIFont systemFontOfSize:17.0f];
-    messageLabel.textAlignment = UITextAlignmentCenter;
+    messageLabel.textAlignment = NSTextAlignmentCenter;
     messageLabel.backgroundColor = nil;
     messageLabel.opaque = NO;
     messageLabel.textColor = [UIColor whiteColor];

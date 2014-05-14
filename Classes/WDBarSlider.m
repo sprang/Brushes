@@ -59,7 +59,7 @@
     label.opaque = NO;
     label.backgroundColor = nil;
     label.font = [UIFont boldSystemFontOfSize:13];
-    label.textAlignment = UITextAlignmentCenter;
+    label.textAlignment = NSTextAlignmentCenter;
     label.textColor = [UIColor whiteColor];
     
     CALayer *layer = self.layer;

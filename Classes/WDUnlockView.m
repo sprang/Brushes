@@ -45,7 +45,7 @@
     label.backgroundColor = nil;
     label.text = NSLocalizedString(@"swipe here to paint", @"swipe here to paint");
     label.font = [UIFont systemFontOfSize:22.0];
-    label.textAlignment = UITextAlignmentCenter;
+    label.textAlignment = NSTextAlignmentCenter;
     label.textColor = [UIColor whiteColor];
     label.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
     

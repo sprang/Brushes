@@ -189,7 +189,7 @@
         CGRect frame = CGRectMake(0, 0, self.bounds.size.width, self.titleFieldHeight);
         
         titleField_ = [[UITextField alloc] initWithFrame:frame];
-        titleField_.textAlignment = UITextAlignmentCenter;
+        titleField_.textAlignment = NSTextAlignmentCenter;
         titleField_.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
         titleField_.delegate = self;
         titleField_.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:([self runningOnPhone] ? 16 : 20)];

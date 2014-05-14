@@ -49,6 +49,8 @@
     return self;
 }
 
+- (void) dismissViewController:(UIViewController *)viewController {}    // for delegate
+
 - (void) done:(id)sender
 {   
     if (self.delegate && [self.delegate respondsToSelector:@selector(dismissViewController:)]) {

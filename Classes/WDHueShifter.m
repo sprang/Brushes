@@ -268,7 +268,7 @@
     }
     
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-    CGContextRef ctx = CGBitmapContextCreate(data, width, height, 8, bpr, colorSpace, kCGImageAlphaPremultipliedFirst);
+    CGContextRef ctx = CGBitmapContextCreate(data, width, height, 8, bpr, colorSpace, kImageAlphaPremultipliedFirst);
     CGColorSpaceRelease(colorSpace);
     
     hueImage_ = CGBitmapContextCreateImage(ctx);

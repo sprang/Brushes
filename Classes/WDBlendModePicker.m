@@ -13,6 +13,7 @@
 #import "WDBlendModePicker.h"
 #import "WDScrollView.h"
 #import "WDUtilities.h"
+#import "NSString+Drawing.h"
 
 const float kScrollViewHeight = 41;
 const float kIndicatorBaseHeight = 48;
@@ -232,9 +233,10 @@ const float kButtonOutset = 10.0f;
 {
     // iterate through the strings and find the longest one
     float width, totalWidth = 0.0f;
+    NSDictionary *attrs = @{NSFontAttributeName:self.font};
     
     for (NSString *title in self.titles) {
-        width = [title sizeWithFont:self.font].width;
+        width = [title sizeWithAttributes:attrs].width;
         totalWidth += width + (kButtonOutset * 2);
     }
     
@@ -249,7 +251,7 @@ const float kButtonOutset = 10.0f;
     
     for (NSString *title in self.titles) {
         button = [UIButton buttonWithType:UIButtonTypeCustom];
-        buttonFrame.size.width = [title sizeWithFont:self.font].width + (kButtonOutset * 2);
+        buttonFrame.size.width = [title sizeWithAttributes:attrs].width + (kButtonOutset * 2);
         button.frame = buttonFrame;
         button.titleLabel.font = self.font;
         button.tag = index++;
