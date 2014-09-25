@@ -138,7 +138,7 @@
 		<dict>
 			<key>UTTypeConformsTo</key>
 			<array>
-				<string>public.data</string>
+				<string>public.folder</string>
 			</array>
 			<key>UTTypeDescription</key>
 			<string>Brushes Painting (unpacked)</string>
