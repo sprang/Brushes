@@ -51,6 +51,7 @@
     table.allowsSelection = NO;
     
     self.contentSizeForViewInPopover = table.frame.size;
+    self.preferredContentSize = table.frame.size;
     
     if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
         UIBarButtonItem *doneItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone

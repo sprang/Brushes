@@ -49,7 +49,7 @@ NSString *WDDropboxWasUnlinkedNotification = @"WDDropboxWasUnlinkedNotification"
     NSString *appKey = @"xxxx";
     NSString *appSecret = @"xxxx";
     
-    DBSession *session = [[DBSession alloc] initWithAppKey:appKey appSecret:appSecret root:kDBRootDropbox];
+    DBSession *session = [[DBSession alloc] initWithAppKey:appKey appSecret:appSecret root:kDBRootAppFolder];
     session.delegate = self; // DBSessionDelegate methods allow you to handle re-authenticating
     [DBSession setSharedSession:session];
     

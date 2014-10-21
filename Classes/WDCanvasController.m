@@ -437,6 +437,7 @@
     UIViewController *controller = [[UIViewController alloc] init];
     controller.view = actionMenu_;
     controller.contentSizeForViewInPopover = actionMenu_.frame.size;
+    controller.preferredContentSize = actionMenu_.frame.size;
     
     visibleMenu_ = actionMenu_;
     [self validateVisibleMenuItems];
@@ -509,6 +510,7 @@
     UIViewController *controller = [[UIViewController alloc] init];
     controller.view = gearMenu_;
     controller.contentSizeForViewInPopover = gearMenu_.frame.size;
+    controller.preferredContentSize = gearMenu_.frame.size;
     
     visibleMenu_ = gearMenu_;
     [self validateVisibleMenuItems];
@@ -713,6 +715,7 @@
                                    permittedArrowDirections:UIPopoverArrowDirectionAny
                                                    animated:YES];
     } else {
+        
         [popoverController_ presentPopoverFromRect:CGRectInset(((UIView *) sender).bounds, 10, 10)
                                             inView:sender
                           permittedArrowDirections:(UIPopoverArrowDirectionUp | UIPopoverArrowDirectionDown)

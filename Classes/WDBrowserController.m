@@ -144,6 +144,7 @@ static NSString *WDAttachmentNotification = @"WDAttachmentNotification";
         WDDocument *document = [[WDPaintingManager sharedInstance] paintingWithName:name];
         NSString *extension = [document fileNameExtensionForType:contentType saveOperation:UIDocumentSaveForCreating];
         NSString *fullName = [name stringByAppendingPathExtension:extension];
+
         NSString *path = [NSTemporaryDirectory() stringByAppendingPathComponent:fullName];
         WDActivity *exportActivity = [WDActivity activityWithFilePath:path type:WDActivityTypeExport];
         [activities_ addActivity:exportActivity];
@@ -160,6 +161,7 @@ static NSString *WDAttachmentNotification = @"WDAttachmentNotification";
     }
     
     NSString *contentType = [WDDocument contentTypeForFormat:format];
+    
     [self startExportActivity:contentType];
     
     WDPaintingIterator *iterator = [[WDPaintingIterator alloc] init];
@@ -168,7 +170,7 @@ static NSString *WDAttachmentNotification = @"WDAttachmentNotification";
         NSString *extension = [document fileNameExtensionForType:contentType saveOperation:UIDocumentSaveForCreating];
         NSString *fullName = [document.displayName stringByAppendingPathExtension:extension];
         NSString *path = [NSTemporaryDirectory() stringByAppendingPathComponent:fullName];
-
+        
         NSError *err = nil;
         if ([document writeTemp:path type:contentType error:&err]) {
             [restClient_ uploadFile:[path lastPathComponent] toPath:[self appFolderPath]
@@ -594,12 +596,15 @@ static NSString *WDAttachmentNotification = @"WDAttachmentNotification";
 
 - (NSString*) appFolderPath
 {
+    return @"/";
+    /*
     NSString* appFolderPath = @"Brushes";
     if (![appFolderPath isAbsolutePath]) {
         appFolderPath = [@"/" stringByAppendingString:appFolderPath];
     }
     
-    return appFolderPath;    
+    return appFolderPath;
+    */
 }
 
 - (void) properlyEnableNavBarItems

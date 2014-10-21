@@ -103,7 +103,8 @@
                                                                                   action:@selector(cancel:)];
         self.navigationItem.leftBarButtonItem = cancelItem;
     }
-    
+
+
     // configure the matrix
     WDMatrix *matrix = (WDMatrix *) self.view;
     matrix.rows = 2;
@@ -132,6 +133,7 @@
     }
     
     self.contentSizeForViewInPopover = self.view.frame.size;
+    self.preferredContentSize = self.view.frame.size;
 }
 
 - (void)viewDidUnload
@@ -169,6 +171,9 @@
 
 - (void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
+    if (!WDDeviceIsPhone())
+        return;
+    
     WDMatrix *matrix = (WDMatrix *) self.view;
     
     if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {

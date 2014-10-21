@@ -170,7 +170,9 @@
     [super viewDidLoad];
     
     self.view.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1];
+
     self.contentSizeForViewInPopover = self.view.frame.size;
+    self.preferredContentSize = self.view.frame.size;
     
     // set up color comparator
     self.colorComparator.target = self;
@@ -221,6 +223,7 @@
 
 - (void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
+
     if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
         if (WDDeviceIs4InchPhone()) {
             matrix.frame = CGRectOffset(CGRectInset(self.view.frame, 5, 20), 0, -5);

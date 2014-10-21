@@ -70,6 +70,7 @@
     CGSize contentSize = self.view.frame.size;
     contentSize.height = 60 * [[WDStylusManager sharedStylusManager] numberOfStylusTypes] - 1;
     self.contentSizeForViewInPopover = contentSize;
+    self.preferredContentSize = contentSize;
     
     self.stylusTable.delegate = self;
     self.stylusTable.dataSource = self;

@@ -32,8 +32,8 @@
 NSString *WDDocumentStartedSavingNotification = @"WDDocumentStartedSavingNotification";
 NSString *WDDocumentFinishedSavingNotification = @"WDDocumentFinishedSavingNotification";
 
-NSString *kWDBrushesFileType = @"com.taptrix.brushes";
-NSString *kWDBrushesUnpackedFileType = @"com.taptrix.brushes-unpacked";
+NSString *kWDBrushesFileType = @"brushes";
+NSString *kWDBrushesUnpackedFileType = @"brushes_unpacked";
 NSString *kWDBrushesMimeType = @"application/x-brushes";
 
 static NSString *errorDomain = @"WDDocument";
@@ -193,7 +193,7 @@ static NSString *previewFilename = @"image.jpg";
 - (NSString *) mimeTypeForContentType:(NSString *)typeName
 {
     // TODO "Brushes" -> typeName conversion should happen in import/export UI
-    if ([typeName isEqualToString:kWDBrushesFileType] || [typeName isEqualToString:@"Brushes"]) {
+    if ([typeName hasSuffix:kWDBrushesFileType] || [typeName isEqualToString:@"Brushes"]) {
         return kWDBrushesMimeType;
     } else {
         return [NSString stringWithFormat:@"image/%@", [self fileNameExtensionForType:typeName saveOperation:UIDocumentSaveForCreating]];
@@ -254,7 +254,7 @@ static NSString *previewFilename = @"image.jpg";
         [writer writePSD:out];
         [out close];
         return YES;
-    } else if ([typeName isEqualToString:kWDBrushesUnpackedFileType]) {
+    } else if ([[path pathExtension] isEqualToString:kWDBrushesUnpackedFileType]) {
         WDLog(@"ERROR: writeTemp does not handle unpacked files!");
         if (outError) {
             *outError = [NSError errorWithDomain:errorDomain code:3 userInfo:@{@"message": @"writeTemp does not handle unpacked files"}];
@@ -295,7 +295,7 @@ static NSString *previewFilename = @"image.jpg";
             }
         }
 #endif
-    } else if ([typeName isEqualToString:kWDBrushesUnpackedFileType]) {
+    } else if ([[self.fileURL pathExtension] isEqualToString:kWDBrushesUnpackedFileType] || [typeName isEqualToString:kWDBrushesUnpackedFileType]) {
         [progress_ reset];
         WDJSONCoder *coder = [[WDJSONCoder alloc] initWithProgress:progress_];
         UIImage *rawImage = [painting_ imageWithSize:painting_.dimensions backgroundColor:[UIColor whiteColor]];
@@ -310,7 +310,7 @@ static NSString *previewFilename = @"image.jpg";
         [coder encodeDictionary:dict forKey:nil];
         contents = [coder dataWithRootNamed:paintingFilename];
         [progress_ complete];
-    } else if ([typeName isEqualToString:kWDBrushesFileType]) {
+    } else if ([[self.fileURL pathExtension] isEqualToString:kWDBrushesFileType] || [typeName isEqualToString:kWDBrushesFileType]) {
         NSDictionary *unpacked = [self contentsForType:kWDBrushesUnpackedFileType error:outError];
         if (unpacked) {
             NSOutputStream *stream = [NSOutputStream outputStreamToMemory];
@@ -323,7 +323,7 @@ static NSString *previewFilename = @"image.jpg";
     } else {
         *outError = [NSError errorWithDomain:errorDomain code:1 userInfo:@{@"type": typeName}];
     }
- 
+    
     WDEndTiming([NSString stringWithFormat:@"Contents for type %@ (%@)", typeName, outError ? *outError : nil]);
     return contents;
 }
@@ -356,7 +356,7 @@ static NSString *previewFilename = @"image.jpg";
     NSDate *start = [NSDate date];
 #endif
     
-    if ([self.savingFileType isEqualToString:kWDBrushesUnpackedFileType]) {
+    if ([[url pathExtension] isEqualToString:kWDBrushesUnpackedFileType]) {
         NSFileManager *fm = [NSFileManager defaultManager];
         if ([fm fileExistsAtPath:[url path]] 
             || [fm createDirectoryAtURL:url withIntermediateDirectories:YES attributes:nil error:outError]) {
@@ -508,7 +508,7 @@ static NSString *previewFilename = @"image.jpg";
         self.painting = preloadedPainting_;
         preloadedPainting_ = nil;
         result = YES;
-    } else if ([self.fileType isEqualToString:kWDBrushesFileType]) {
+    } else if ([[url pathExtension] isEqualToString:kWDBrushesFileType]) {
         if (self.loadOnlyThumbnail) {
             WDTar *tar = [[WDTar alloc] init];
             NSData *thumbnail = [tar readEntry:thumbnailFilename fromTar:url];
@@ -533,7 +533,7 @@ static NSString *previewFilename = @"image.jpg";
                 result = NO;
             }
         }
-    } else if ([self.fileType isEqualToString:kWDBrushesUnpackedFileType]) {
+    } else if ([[url pathExtension] isEqualToString:kWDBrushesUnpackedFileType]) {
         if (self.loadOnlyThumbnail) {
             self.thumbnail = [UIImage imageWithContentsOfFile:[[url URLByAppendingPathComponent:thumbnailFilename] path]];
             if (self.thumbnail) {
@@ -607,7 +607,7 @@ static NSString *previewFilename = @"image.jpg";
     } else if ([name isEqualToString:@"JPEG"]) {
         return @"public.jpeg";
     } else if ([name isEqualToString:@"Brushes"]) {
-        return @"com.taptrix.brushes";
+        return @"brushes";
     } else {
         WDLog(@"Unrecognized format: %@", name);
         return name;

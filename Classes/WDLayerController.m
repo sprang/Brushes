@@ -550,6 +550,7 @@
     }
     
     self.contentSizeForViewInPopover = self.view.frame.size;
+    self.preferredContentSize = self.view.frame.size;
 }
 
 - (WDBar *) topBar

@@ -360,6 +360,7 @@
     [brushTable addGestureRecognizer:doubleTap];
     
     self.contentSizeForViewInPopover = self.view.frame.size;
+    self.preferredContentSize = self.view.frame.size;
 
     self.navigationItem.leftBarButtonItem.enabled = [[WDActiveState sharedInstance] canDeleteBrush];
     

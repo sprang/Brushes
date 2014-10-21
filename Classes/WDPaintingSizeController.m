@@ -441,6 +441,7 @@ const NSUInteger WDMaximumDimension = 2048;
     scrollView.opaque =  YES;
     
     self.contentSizeForViewInPopover = self.view.frame.size;
+    self.preferredContentSize = self.view.frame.size;
 }
 
 - (void) viewWillAppear:(BOOL)animated

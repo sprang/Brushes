@@ -67,7 +67,7 @@
 - (void) dispatch:(dispatch_block_t)task
 {
     if (!dispatchQueue_) {
-        dispatchQueue_ = dispatch_queue_create("com.taptrix.queue.WDDictionaryDecoder", NULL);
+        dispatchQueue_ = dispatch_queue_create("dk.holi.queue.WDDictionaryDecoder", NULL);
         dispatchGroup_ = dispatch_group_create();
     }
     dispatch_group_async(dispatchGroup_, dispatchQueue_, task);
