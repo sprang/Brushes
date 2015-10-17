@@ -411,6 +411,8 @@
 		C01FCF5008A9545400542493 /* WDUpdateLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = C01FCF5008A9545400542492 /* WDUpdateLayer.m */; };
 		C01FCF5008A9545400542499 /* WDDocumentChange.m in Sources */ = {isa = PBXBuildFile; fileRef = C01FCF5008A9545400542498 /* WDDocumentChange.m */; };
 		C01FCF5008A95454005424A5 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C01FCF5008A95454005424A4 /* Accelerate.framework */; };
+		CF8513D91A7582C500F456A9 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF8513D81A7582C500F456A9 /* LaunchScreen.xib */; };
+		CF8513DC1A75836B00F456A9 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF8513DB1A75836B00F456A9 /* Crashlytics.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -985,6 +987,8 @@
 		C01FCF5008A9545400542492 /* WDUpdateLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WDUpdateLayer.m; sourceTree = "<group>"; };
 		C01FCF5008A9545400542498 /* WDDocumentChange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WDDocumentChange.m; sourceTree = "<group>"; };
 		C01FCF5008A95454005424A4 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		CF8513D81A7582C500F456A9 /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LaunchScreen.xib; path = XIB/LaunchScreen.xib; sourceTree = "<group>"; };
+		CF8513DB1A75836B00F456A9 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -998,6 +1002,7 @@
 				6BD7072112AD011F004E07C9 /* CoreText.framework in Frameworks */,
 				6BD7072212AD011F004E07C9 /* Foundation.framework in Frameworks */,
 				6BD7072312AD011F004E07C9 /* MessageUI.framework in Frameworks */,
+				CF8513DC1A75836B00F456A9 /* Crashlytics.framework in Frameworks */,
 				6BD7072412AD011F004E07C9 /* OpenGLES.framework in Frameworks */,
 				6BD7072512AD011F004E07C9 /* QuartzCore.framework in Frameworks */,
 				6BD7072612AD011F004E07C9 /* Security.framework in Frameworks */,
@@ -1084,6 +1089,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CF8513DB1A75836B00F456A9 /* Crashlytics.framework */,
 				29E41AC113F9B229000C3305 /* libz.dylib */,
 				6BDB83C11593CDC10037E10B /* T1PogoManager */,
 				C01FCF5008A95454005424A4 /* Accelerate.framework */,
@@ -1533,6 +1539,7 @@
 		6B984AF4131623F1007FB48F /* XIB */ = {
 			isa = PBXGroup;
 			children = (
+				CF8513D81A7582C500F456A9 /* LaunchScreen.xib */,
 				6B40CE6A181FD36600004FB2 /* Brush.xib */,
 				6B40CE6B181FD36600004FB2 /* BrushCell.xib */,
 				6B40CE6C181FD36600004FB2 /* Brushes.xib */,
@@ -2023,6 +2030,7 @@
 				6B219CBD1510718B00761F18 /* hidden@2x.png in Resources */,
 				6B08CE3518224796001AFC3C /* merge-modern.png in Resources */,
 				6B08CE0B18218E42001AFC3C /* album-modern.png in Resources */,
+				CF8513D91A7582C500F456A9 /* LaunchScreen.xib in Resources */,
 				6B219CBE1510718B00761F18 /* lock@2x.png in Resources */,
 				6B219CBF1510718B00761F18 /* visible@2x.png in Resources */,
 				6B219CC1151071FE00761F18 /* unlock@2x.png in Resources */,
@@ -2376,11 +2384,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
+					"$(PROJECT_DIR)",
 				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -2395,6 +2407,7 @@
 					"\"$(SRCROOT)/T1PogoManager\"",
 				);
 				PRODUCT_NAME = Brushes;
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "armv7 armv7s arm64";
@@ -2405,11 +2418,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
+					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Brushes_Prefix.pch;
@@ -2422,6 +2439,7 @@
 					"\"$(SRCROOT)/T1PogoManager\"",
 				);
 				PRODUCT_NAME = Brushes;
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -2453,11 +2471,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
+					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Brushes_Prefix.pch;
@@ -2470,6 +2492,7 @@
 					"\"$(SRCROOT)/T1PogoManager\"",
 				);
 				PRODUCT_NAME = Brushes;
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -2503,12 +2526,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = Brushes.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
+					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Brushes_Prefix.pch;
@@ -2522,6 +2549,7 @@
 					"\"$(SRCROOT)/T1PogoManager\"",
 				);
 				PRODUCT_NAME = Brushes;
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -2543,7 +2571,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-lxml2";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;

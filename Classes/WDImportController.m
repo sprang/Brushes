@@ -116,9 +116,11 @@ static NSString * const WDDropboxSubdirectoryMissingNotification = @"WDDropboxSu
     importButton_.enabled = NO;
     
     self.toolbarItems = [self toolbarItems];
-	
-    self.contentSizeForViewInPopover = CGSizeMake(320, 480);
-    self.preferredContentSize = CGSizeMake(320, 480);
+    
+    if ([self respondsToSelector:@selector(setPreferredContentSize:)])
+        self.preferredContentSize = CGSizeMake(320, 480);
+    else
+        self.contentSizeForViewInPopover = CGSizeMake(320, 480);
     
     return self;
 }

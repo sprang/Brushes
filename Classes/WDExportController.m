@@ -132,8 +132,10 @@
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
     
-    self.contentSizeForViewInPopover = self.view.frame.size;
-    self.preferredContentSize = self.view.frame.size;
+    if ([self respondsToSelector:@selector(setPreferredContentSize:)])
+        self.preferredContentSize = self.view.frame.size;
+    else
+        self.contentSizeForViewInPopover = self.view.frame.size;
 }
 
 - (void)viewDidUnload

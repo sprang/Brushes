@@ -359,8 +359,10 @@
     [doubleTap addTarget:self action:@selector(done:)];
     [brushTable addGestureRecognizer:doubleTap];
     
-    self.contentSizeForViewInPopover = self.view.frame.size;
-    self.preferredContentSize = self.view.frame.size;
+    if ([self respondsToSelector:@selector(setPreferredContentSize:)])
+        self.preferredContentSize = self.view.frame.size;
+    else
+        self.contentSizeForViewInPopover = self.view.frame.size;
 
     self.navigationItem.leftBarButtonItem.enabled = [[WDActiveState sharedInstance] canDeleteBrush];
     

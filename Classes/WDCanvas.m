@@ -191,7 +191,10 @@ NSString *WDGestureEndedNotification = @"WDGestureEnded";
     self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.exclusiveTouch = YES;
     self.opaque = YES;
-    self.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1];
+    
+    //TODO: temp fix for black artifacts/jagged lines
+    //self.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1];
+    self.backgroundColor = [UIColor colorWithWhite:1 alpha:1];
     
     [self configureGestures];
     
@@ -572,7 +575,8 @@ NSString *WDGestureEndedNotification = @"WDGestureEnded";
     mat4f_LoadCGAffineTransform(effectiveProj, canvasTransform_);
     mat4f_MultiplyMat4f(proj, effectiveProj, final);
     
-    [self drawWhiteBackground:final];
+    // TODO: temp fix for black artifacts/jagged lines
+    //[self drawWhiteBackground:final];
 
     // ask the painter to render
     [self.painting blit:final];

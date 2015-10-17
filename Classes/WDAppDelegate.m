@@ -17,6 +17,7 @@
 #import "WDPaintingSizeController.h"
 #import "WDDocument.h"
 #import "WDStylusManager.h"
+//#import <Crashlytics/Crashlytics.h>
 
 NSString *WDDropboxWasUnlinkedNotification = @"WDDropboxWasUnlinkedNotification";
 
@@ -54,6 +55,8 @@ NSString *WDDropboxWasUnlinkedNotification = @"WDDropboxWasUnlinkedNotification"
     [DBSession setSharedSession:session];
     
     [self setupDefaults];
+    
+    //[Crashlytics startWithAPIKey:@"xxxx"];
     
     browserController = [[WDBrowserController alloc] initWithNibName:nil bundle:nil];
     navigationController = [[UINavigationController alloc] initWithRootViewController:browserController];

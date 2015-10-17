@@ -28,6 +28,22 @@
 	</dict>
 	<dict>
 		<key>Height</key>
+		<real>1334</real>
+		<key>Name</key>
+		<string>iPhone 6</string>
+		<key>Width</key>
+		<string>750</string>
+	</dict>
+	<dict>
+		<key>Height</key>
+		<integer>2208</integer>
+		<key>Name</key>
+		<string>iPhone 6 Plus</string>
+		<key>Width</key>
+		<integer>1242</integer>
+	</dict>
+	<dict>
+		<key>Height</key>
 		<integer>1024</integer>
 		<key>Name</key>
 		<string>iPad</string>

@@ -142,8 +142,18 @@ static NSString *WDAttachmentNotification = @"WDAttachmentNotification";
 {
     for (NSString *name in selectedPaintings_) {
         WDDocument *document = [[WDPaintingManager sharedInstance] paintingWithName:name];
-        NSString *extension = [document fileNameExtensionForType:contentType saveOperation:UIDocumentSaveForCreating];
-        NSString *fullName = [name stringByAppendingPathExtension:extension];
+
+        NSString *extension = nil;
+        
+        if ([contentType isEqualToString:kWDBrushesFileType])
+            extension = kWDBrushesFileType;
+        else
+            extension = [document fileNameExtensionForType:contentType saveOperation:UIDocumentSaveForCreating];
+        
+        NSString *fullName = name;
+        
+        if (extension)
+            fullName = [name stringByAppendingPathExtension:extension];
 
         NSString *path = [NSTemporaryDirectory() stringByAppendingPathComponent:fullName];
         WDActivity *exportActivity = [WDActivity activityWithFilePath:path type:WDActivityTypeExport];
@@ -167,7 +177,13 @@ static NSString *WDAttachmentNotification = @"WDAttachmentNotification";
     WDPaintingIterator *iterator = [[WDPaintingIterator alloc] init];
     iterator.paintings = [selectedPaintings_ allObjects];
     iterator.block = ^void(WDDocument *document) {
-        NSString *extension = [document fileNameExtensionForType:contentType saveOperation:UIDocumentSaveForCreating];
+        NSString *extension = nil;
+        
+        if ([contentType isEqualToString:kWDBrushesFileType])
+            extension = kWDBrushesFileType;
+        else
+            extension = [document fileNameExtensionForType:contentType saveOperation:UIDocumentSaveForCreating];
+        
         NSString *fullName = [document.displayName stringByAppendingPathExtension:extension];
         NSString *path = [NSTemporaryDirectory() stringByAppendingPathComponent:fullName];
         

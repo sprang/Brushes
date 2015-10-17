@@ -16,12 +16,14 @@
 #import "WDUtilities.h"
 
 NSString *WDPaintingSizeIndex = @"WDPaintingSizeIndex";
+NSString *WDPaintingSizeVersion = @"WDPaintingSizeVersion";
 NSString *WDCustomSizeWidth = @"WDCustomSizeWidth";
 NSString *WDCustomSizeHeight = @"WDCustomSizeHeight";
 NSString *WDPaintingOrientationRotated = @"WDPaintingOrientationRotated";
 
 const NSUInteger WDMinimumDimension = 64;
 const NSUInteger WDMaximumDimension = 2048;
+const NSUInteger WDPaintingSizeCurrentVersion = 1;
 
 #define kWDEdgeBuffer 25
 
@@ -100,6 +102,18 @@ const NSUInteger WDMaximumDimension = 2048;
     } else {
         NSInteger currentIndex = [defaults integerForKey:WDPaintingSizeIndex];        
         needToRebuildIndex = (currentIndex < 0 || currentIndex >= docSizes.count) ? YES : NO;
+    }
+    
+    if (![defaults objectForKey:WDPaintingSizeVersion]) {
+        needToRebuildIndex = YES;
+        [defaults setObject:@(WDPaintingSizeCurrentVersion) forKey:WDPaintingSizeVersion];
+    } else {
+        NSInteger version = [defaults integerForKey:WDPaintingSizeVersion];
+        if (version != WDPaintingSizeCurrentVersion)
+        {
+            needToRebuildIndex = YES;
+            [defaults setObject:@(WDPaintingSizeCurrentVersion) forKey:WDPaintingSizeVersion];
+        }
     }
     
     if (needToRebuildIndex) {
@@ -440,8 +454,10 @@ const NSUInteger WDMaximumDimension = 2048;
     scrollView.delegate = self;
     scrollView.opaque =  YES;
     
-    self.contentSizeForViewInPopover = self.view.frame.size;
-    self.preferredContentSize = self.view.frame.size;
+    if ([self respondsToSelector:@selector(setPreferredContentSize:)])
+        self.preferredContentSize = self.view.frame.size;
+    else
+        self.contentSizeForViewInPopover = self.view.frame.size;
 }
 
 - (void) viewWillAppear:(BOOL)animated

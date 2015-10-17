@@ -436,8 +436,11 @@
     
     UIViewController *controller = [[UIViewController alloc] init];
     controller.view = actionMenu_;
-    controller.contentSizeForViewInPopover = actionMenu_.frame.size;
-    controller.preferredContentSize = actionMenu_.frame.size;
+    
+    if ([controller respondsToSelector:@selector(setPreferredContentSize:)])
+        controller.preferredContentSize = actionMenu_.frame.size;
+    else
+        controller.contentSizeForViewInPopover = actionMenu_.frame.size;
     
     visibleMenu_ = actionMenu_;
     [self validateVisibleMenuItems];
@@ -1222,7 +1225,11 @@
 {    
     UIView *background = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     background.opaque = YES;
-    background.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1];
+    
+    // TODO: temp fix for black artifacts/jagged lines
+    //background.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1];
+    background.backgroundColor = [UIColor colorWithWhite:1 alpha:1];
+    
     self.view = background;
     
     if (self.painting) {

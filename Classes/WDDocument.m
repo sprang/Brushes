@@ -261,6 +261,7 @@ static NSString *previewFilename = @"image.jpg";
         }
         return NO;
     } else {
+
         id contents = [self contentsForType:typeName error:outError];
         if (contents) {
             [[NSFileManager defaultManager] createFileAtPath:path contents:contents attributes:nil];
@@ -295,7 +296,7 @@ static NSString *previewFilename = @"image.jpg";
             }
         }
 #endif
-    } else if ([[self.fileURL pathExtension] isEqualToString:kWDBrushesUnpackedFileType] || [typeName isEqualToString:kWDBrushesUnpackedFileType]) {
+    } else if (([[self.fileURL pathExtension] isEqualToString:kWDBrushesUnpackedFileType] && ![typeName isEqualToString:kWDBrushesFileType]) || [typeName isEqualToString:kWDBrushesUnpackedFileType]) {
         [progress_ reset];
         WDJSONCoder *coder = [[WDJSONCoder alloc] initWithProgress:progress_];
         UIImage *rawImage = [painting_ imageWithSize:painting_.dimensions backgroundColor:[UIColor whiteColor]];
