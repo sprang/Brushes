@@ -68,7 +68,7 @@ NSString *WDBlueToothStateChangedNotification = @"WDBlueToothStateChangedNotific
     
     centralBlueToothManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil];
     
-    self.mode = [[NSUserDefaults standardUserDefaults] integerForKey:@"WDStylusMode"];
+    self.mode = (WDStylusType)[[NSUserDefaults standardUserDefaults] integerForKey:@"WDStylusMode"];
     
     return self;
 }

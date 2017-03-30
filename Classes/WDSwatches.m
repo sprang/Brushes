@@ -80,6 +80,8 @@ const float kSwatchSize = 45.0f;
 
 - (void) awakeFromNib
 {
+    [super awakeFromNib];
+    
     highlightIndex_ = -1;
     initialIndex_ = -1;
     

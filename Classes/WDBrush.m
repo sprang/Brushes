@@ -71,7 +71,7 @@ static NSString *WDUUIDKey = @"uuid";
 + (WDBrush *) randomBrush
 {
     NSArray *generators = [[WDActiveState sharedInstance] canonicalGenerators];
-    WDStampGenerator *generator = generators[WDRandomIntInRange(0, generators.count)];
+    WDStampGenerator *generator = generators[WDRandomIntInRange(0, (int)generators.count)];
     
     WDBrush *random = [WDBrush brushWithGenerator:[generator copy]];
     

@@ -139,7 +139,7 @@
 {
     [self encodeKey:key];
     if (array) {
-        progress_.total += [array count];
+        progress_.total += (int)[array count];
         [json_ appendString:@"["];
         BOOL first = YES;
         for (id obj in array) {
@@ -179,7 +179,7 @@
 {
     [self encodeKey:key];
     if (dictionary) {
-        progress_.total += [dictionary count];
+        progress_.total += (int)[dictionary count];
         [json_ appendString:@"{"];
         [dictionary enumerateKeysAndObjectsUsingBlock:^void(id subkey, id obj, BOOL *stop) {
     #if WD_DEBUG
@@ -421,7 +421,7 @@
 
 - (id) reconstructDictionary:(NSDictionary *)dict binary:(NSDictionary *)binary 
 {
-    progress_.total += dict.count;
+    progress_.total += (int)dict.count;
     __block NSString *type = nil;
     NSMutableDictionary *converted = [NSMutableDictionary dictionaryWithCapacity:dict.count];
     [dict enumerateKeysAndObjectsUsingBlock:^void(id key, id obj, BOOL *stop) {
@@ -541,7 +541,7 @@
 
 - (id) reconstructArray:(NSArray *)array binary:(NSDictionary *)binary {
     // convert recursively
-    progress_.total += array.count;
+    progress_.total += (int)array.count;
     NSMutableArray *converted = [NSMutableArray arrayWithCapacity:[array count]];
     for (id obj in array) {
         id reconstructed = [self reconstruct:obj binary:binary];

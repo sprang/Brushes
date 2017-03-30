@@ -63,6 +63,8 @@
 
 - (void) awakeFromNib 
 {
+    [super awakeFromNib];
+    
     initialColor_ = [WDColor whiteColor];
     currentColor_ = [WDColor whiteColor];
     

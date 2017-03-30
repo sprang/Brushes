@@ -111,7 +111,7 @@ static NSString *WDAttachmentNotification = @"WDAttachmentNotification";
     
     WDEmail *email = [[WDEmail alloc] init];
     email.completeAttachments = 0;
-    email.expectedAttachments = [selectedPaintings_ count];
+    email.expectedAttachments = (int)[selectedPaintings_ count];
     email.picker = picker;
     
     WDPaintingIterator *iterator = [[WDPaintingIterator alloc] init];

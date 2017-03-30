@@ -57,7 +57,7 @@ static NSString *WDUUIDKey = @"uuid";
         return nil;
     }
     
-    self.seed = random();
+    self.seed = (unsigned int)random();
     
     self.size = CGSizeMake(kBrushDimension, kBrushDimension);
     
@@ -79,7 +79,7 @@ static NSString *WDUUIDKey = @"uuid";
 
 - (void) resetSeed
 {
-    self.seed = random();
+    self.seed = (unsigned int)random();
     self.stamp = nil;
     self.smallStamp = nil;
     [delegate generatorChanged:self];
