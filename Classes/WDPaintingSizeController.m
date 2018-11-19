@@ -22,8 +22,8 @@ NSString *WDCustomSizeHeight = @"WDCustomSizeHeight";
 NSString *WDPaintingOrientationRotated = @"WDPaintingOrientationRotated";
 
 const NSUInteger WDMinimumDimension = 64;
-const NSUInteger WDMaximumDimension = 2048;
-const NSUInteger WDPaintingSizeCurrentVersion = 1;
+const NSUInteger WDMaximumDimension = 4096;
+const NSUInteger WDPaintingSizeCurrentVersion = 2;
 
 #define kWDEdgeBuffer 25
 

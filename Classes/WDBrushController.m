@@ -43,6 +43,11 @@
                                                                                    action:@selector(randomize:)];
     self.navigationItem.rightBarButtonItem = randomizeItem;
     
+    if ([self respondsToSelector:@selector(edgesForExtendedLayout)])
+    {
+        self.edgesForExtendedLayout = UIRectEdgeNone;
+    }
+    
     return self;
 }
 

@@ -583,11 +583,13 @@ NSString *WDScaleKey = @"scale";
     NSInteger           numNodes = closed_ ? nodes_.count : nodes_.count - 1;
     WDBezierSegment     *segment = nil;
     
+    BezierSegmentRecusionCounter = 0;
     for (int i = 0; i < numNodes; i++) {
         WDBezierNode *a = nodes_[i];
         WDBezierNode *b = nodes_[(i+1) % nodes_.count];
         
         segment = [WDBezierSegment segmentWithStart:a end:b];
+
         [segment flattenIntoArray:flatNodes];
     }
     
@@ -799,7 +801,7 @@ typedef struct {
 }
 
 - (CGRect) paint:(WDRandom *)randomizer
-{    
+{
     if (!points_) {
         points_ = [[NSMutableArray alloc] init];
         angles_ = [[NSMutableArray alloc] init];

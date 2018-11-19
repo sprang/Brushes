@@ -192,9 +192,7 @@ NSString *WDGestureEndedNotification = @"WDGestureEnded";
     self.exclusiveTouch = YES;
     self.opaque = YES;
     
-    //TODO: temp fix for black artifacts/jagged lines
-    //self.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1];
-    self.backgroundColor = [UIColor colorWithWhite:1 alpha:1];
+    self.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1];
     
     [self configureGestures];
     
@@ -575,8 +573,7 @@ NSString *WDGestureEndedNotification = @"WDGestureEnded";
     mat4f_LoadCGAffineTransform(effectiveProj, canvasTransform_);
     mat4f_MultiplyMat4f(proj, effectiveProj, final);
     
-    // TODO: temp fix for black artifacts/jagged lines
-    //[self drawWhiteBackground:final];
+    [self drawWhiteBackground:final];
 
     // ask the painter to render
     [self.painting blit:final];
@@ -599,6 +596,7 @@ NSString *WDGestureEndedNotification = @"WDGestureEnded";
         glClearColor(randomColor.red, randomColor.green, randomColor.blue, 0.5f);
         glClear(GL_COLOR_BUFFER_BIT);
     }
+    
     glDisable(GL_SCISSOR_TEST);
 
     [mainRegion present];
@@ -967,7 +965,6 @@ NSString *WDGestureEndedNotification = @"WDGestureEnded";
     }
     
     BOOL oneFingerTapsCanPaint = [[NSUserDefaults standardUserDefaults] boolForKey:@"WDTwoFingerInterfaceToggle"];
-    
     if (!self.controller.editing || !oneFingerTapsCanPaint) {
         [self.controller oneTap:sender];
         return;

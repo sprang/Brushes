@@ -31,6 +31,11 @@
 
 @implementation WDFreehandTool {
     WDRandom *randomizer_;
+    BOOL supportsPreciseLocation;
+    BOOL supportsCoalescedTouches;
+    BOOL supportsStylusTouchType;
+    float _lastAltitudeAngle;
+    float _brushSize;
 }
 
 @synthesize  eraseMode;
@@ -46,6 +51,10 @@
     
     accumulatedStrokePoints_ = [[NSMutableArray alloc] init];
     
+    supportsPreciseLocation = [[UITouch new] respondsToSelector:@selector(preciseLocationInView:)];
+    supportsCoalescedTouches = [[UIEvent new] respondsToSelector:@selector(coalescedTouchesForTouch:)];
+    supportsStylusTouchType = [[NSProcessInfo processInfo] isOperatingSystemAtLeastVersion:(NSOperatingSystemVersion){9, 1, 0}];
+    
     return self;
 }
 
@@ -59,10 +68,18 @@
     return @"brush_landscape.png";
 }
 
-- (CGPoint) documentLocationFromRecognizer:(UIGestureRecognizer *)recognizer
+- (CGPoint) documentLocationFromRecognizer:(WDPanGestureRecognizer *)recognizer withTouch: (UITouch*) touch
 {
     WDCanvas *canvas = (WDCanvas *)recognizer.view;
-    return [canvas convertPointToDocument:[recognizer locationInView:recognizer.view]];
+    CGPoint point;
+    
+    if (supportsPreciseLocation){
+        point = [touch preciseLocationInView:recognizer.view];
+    }else{
+        point = [touch locationInView:recognizer.view];
+    }
+    
+    return [canvas convertPointToDocument:point];
 }
 
 - (void) averagePointsFrom:(NSUInteger)startIx to:(NSUInteger)endIx
@@ -133,7 +150,7 @@
     strokeBounds_ = CGRectZero;
     [accumulatedStrokePoints_ removeAllObjects];
     
-    CGPoint location = [self documentLocationFromRecognizer:recognizer];
+    CGPoint location = [self documentLocationFromRecognizer:recognizer withTouch:[recognizer.touches anyObject]];
     
     // capture first point
     lastLocation_ = location;
@@ -150,6 +167,8 @@
     pointsToFit_[0] = node;
     pointsIndex_ = 1;
     
+    _brushSize = [WDActiveState sharedInstance].brush.weight.value;
+    
     clearBuffer_ = YES;
 }
 
@@ -158,56 +177,76 @@
     [super gestureMoved:recognizer];
     
     WDCanvas    *canvas = (WDCanvas *)recognizer.view;
-    CGPoint     location = [self documentLocationFromRecognizer:recognizer];
-    float       distanceMoved = WDDistance(location, lastLocation_);
+    UITouch     *_touch = [recognizer.touches anyObject];
+    NSMutableArray<UITouch*> * touches = [NSMutableArray new];
     
-    if (distanceMoved < 3.0 / canvas.scale) {
-        // haven't moved far enough
-        return;
+    if (supportsCoalescedTouches){
+        [touches addObjectsFromArray:[recognizer.event coalescedTouchesForTouch:_touch]];
+    }else{
+        [touches addObject:_touch];
     }
     
-    float pressure = 1.0f;
-    
-    if (!self.realPressure) {
-        if ([recognizer respondsToSelector:@selector(velocityInView:)]) {
-            CGPoint velocity = [(UIPanGestureRecognizer *) recognizer velocityInView:recognizer.view];
-            float   speed = WDMagnitude(velocity) / 1000.0f; // pixels/millisecond
-
-            // account for view scale
-            //speed /= canvas.scale;
-            
-            // convert speed into "pressure"
-            pressure = WDSineCurve(1.0f - MIN(kSpeedFactor, speed) / kSpeedFactor);
-            pressure = 1.0f - pressure;
-        }
-    } else {
-        UITouch *touch = [recognizer.touches anyObject];
-        pressure = [[WDStylusManager sharedStylusManager] pressureForTouch:touch realPressue:nil];
-    }
+    for(UITouch * touch in touches)
+    {
+        CGPoint     location = [self documentLocationFromRecognizer:recognizer withTouch:touch];
+        float       distanceMoved = WDDistance(location, lastLocation_);
         
-    if (firstEver_) {
-        pointsToFit_[0].inPressure = pressure;
-        pointsToFit_[0].anchorPressure = pressure;
-        pointsToFit_[0].outPressure = pressure;
-        firstEver_ = NO;
-    } else if (pointsIndex_ != 0) {
-        // average out the pressures
-        pressure = (pressure + pointsToFit_[pointsIndex_ - 1].anchorPressure) / 2;
+        if (distanceMoved < 3.0 / canvas.scale) {
+            // haven't moved far enough
+            return;
+        }
+        
+        float pressure = 1.0f;
+        
+        if (!self.realPressure || (supportsStylusTouchType && _touch.type != UITouchTypeStylus)) {
+            if ([recognizer respondsToSelector:@selector(velocityInView:)]) {
+                CGPoint velocity = [(UIPanGestureRecognizer *) recognizer velocityInView:recognizer.view];
+                float   speed = WDMagnitude(velocity) / 1000.0f; // pixels/millisecond
+                
+                // account for view scale
+                //speed /= canvas.scale;
+                
+                // convert speed into "pressure"
+                pressure = WDSineCurve(1.0f - MIN(kSpeedFactor, speed) / kSpeedFactor);
+                pressure = 1.0f - pressure;
+            }
+        } else {
+            pressure = [[WDStylusManager sharedStylusManager] pressureForTouch:_touch realPressue:nil];
+            
+            float altitudeAngle = 1/MIN([touch altitudeAngle], 1);
+            
+            if (altitudeAngle != _lastAltitudeAngle){
+                [WDActiveState sharedInstance].brush.weight.value = _brushSize * altitudeAngle;
+                [[NSNotificationCenter defaultCenter] postNotificationName:WDActiveBrushDidChange object:nil];
+                
+                _lastAltitudeAngle = altitudeAngle;
+            }
+        }
+        
+        if (firstEver_) {
+            pointsToFit_[0].inPressure = pressure;
+            pointsToFit_[0].anchorPressure = pressure;
+            pointsToFit_[0].outPressure = pressure;
+            firstEver_ = NO;
+        } else if (pointsIndex_ != 0) {
+            // average out the pressures
+            pressure = (pressure + pointsToFit_[pointsIndex_ - 1].anchorPressure) / 2;
+        }
+        
+        pointsToFit_[pointsIndex_++] = [WDBezierNode bezierNodeWithAnchorPoint:[WD3DPoint pointWithX:location.x y:location.y z:pressure]];
+        
+        // special case: otherwise the 2nd overall point never gets averaged
+        if (pointsIndex_ == 3) { // since we just incrementred pointsIndex (it was really just 2)
+            [self averagePointsFrom:1 to:2];
+        }
+        
+        if (pointsIndex_ == 5) {
+            [self paintFittedPoints:canvas];
+        }
+        
+        // save data for the next iteration
+        lastLocation_ = location;
     }
-    
-    pointsToFit_[pointsIndex_++] = [WDBezierNode bezierNodeWithAnchorPoint:[WD3DPoint pointWithX:location.x y:location.y z:pressure]];
-    
-    // special case: otherwise the 2nd overall point never gets averaged
-    if (pointsIndex_ == 3) { // since we just incrementred pointsIndex (it was really just 2)
-        [self averagePointsFrom:1 to:2];                 
-    }
-    
-    if (pointsIndex_ == 5) {
-        [self paintFittedPoints:canvas];
-    }
-
-    // save data for the next iteration
-    lastLocation_ = location;
 }
 
 - (void) gestureEnded:(WDPanGestureRecognizer *)recognizer
@@ -244,6 +283,11 @@
     
     if (CGRectIntersectsRect(strokeBounds_, painting.bounds)) {
         [painting.activeLayer commitStroke:strokeBounds_ color:color erase:eraseMode undoable:YES];
+    }
+    
+    if (_brushSize != [WDActiveState sharedInstance].brush.weight.value){
+        [WDActiveState sharedInstance].brush.weight.value = _brushSize;
+        [[NSNotificationCenter defaultCenter] postNotificationName:WDActiveBrushDidChange object:nil];
     }
     
     painting.activePath = nil;

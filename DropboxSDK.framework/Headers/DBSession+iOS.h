@@ -8,6 +8,8 @@
 
 #import "DBSession.h"
 
+#import <UIKit/UIKit.h>
+
 @interface DBSession (iOS)
 
 + (NSDictionary*)parseURLParams:(NSString *)query;

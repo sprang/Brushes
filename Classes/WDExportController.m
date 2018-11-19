@@ -22,7 +22,7 @@
 
 @implementation WDExportController {
     UIBarButtonItem *dropbox_;
-    UIBarButtonItem *email_;
+    UIBarButtonItem *share_;
 }
 
 @synthesize browserController;
@@ -62,9 +62,10 @@
     return formats[preferredFormat];
 }
 
-- (void) email:(id)sender
+- (void) share:(id)sender
 {
-    [self.browserController emailPaintings:[self stringForPreferredFormat]];
+    [self.browserController sharePaintings:[self stringForPreferredFormat]];
+    
 }
 
 - (void) sendToDropbox:(id)sender
@@ -74,8 +75,8 @@
 
 - (void) enableToolbarItems
 {
-    NSUInteger preferredFormat = [[NSUserDefaults standardUserDefaults] integerForKey:@"WDPreferredExportFormat"];
-    email_.enabled = preferredFormat == 2 || preferredFormat == 3;
+    //NSUInteger preferredFormat = [[NSUserDefaults standardUserDefaults] integerForKey:@"WDPreferredExportFormat"];
+    share_.enabled = YES; //preferredFormat == 2 || preferredFormat == 3;
 }
 
 - (void) select:(WDImageButton *)sender
@@ -145,11 +146,11 @@
 
 - (NSArray *) toolbarItems
 {
-    if (!email_) {
-        email_ = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Email", @"Email")
+    if (!share_) {
+        share_ = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Share", @"Share")
                                                   style:UIBarButtonItemStyleBordered
                                                  target:self
-                                                 action:@selector(email:)];
+                                                 action:@selector(share:)];
     }
     
     if (!dropbox_) {
@@ -162,7 +163,7 @@
     UIBarButtonItem *flexible = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
                                                                               target:nil action:nil];
     
-    return @[email_, flexible, dropbox_];
+    return @[dropbox_, flexible, share_];
 }
 
 - (void) viewWillAppear:(BOOL)animated

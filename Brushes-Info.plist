@@ -6,6 +6,29 @@
 	<string>English</string>
 	<key>CFBundleDisplayName</key>
 	<string>Brushes Redux</string>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeIconFiles</key>
+			<array>
+				<string>Icon-64x64</string>
+				<string>export_brushes_icon-modern@2x</string>
+				<string>Icon-64x64</string>
+				<string>Icon-320x320</string>
+				<string>export_brushes_icon-modern@2x</string>
+			</array>
+			<key>CFBundleTypeName</key>
+			<string>Brushes Redux Painting</string>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>LSHandlerRank</key>
+			<string>Owner</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>dk.holi.brushes-dev.packed</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIcons</key>
@@ -37,13 +60,14 @@
 				<string>AppIcon72x72</string>
 				<string>AppIcon60x60</string>
 				<string>AppIcon57x57</string>
+				<string>AppIcon167x167</string>
 			</array>
 			<key>UIPrerenderedIcon</key>
 			<true/>
 		</dict>
 	</dict>
 	<key>CFBundleIdentifier</key>
-	<string>dk.holi.brushes</string>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -51,7 +75,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>3.1.2</string>
+	<string>3.2</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -66,11 +90,36 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>3.1.2.1</string>
+	<string>3.2</string>
+	<key>Fabric</key>
+	<dict>
+		<key>APIKey</key>
+		<string></string>
+		<key>Kits</key>
+		<array>
+			<dict>
+				<key>KitInfo</key>
+				<dict/>
+				<key>KitName</key>
+				<string>Crashlytics</string>
+			</dict>
+		</array>
+	</dict>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>dbapi-2</string>
+		<string>dbapi-8-emm</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSMainNibFile</key>
 	<string>MainWindow</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>MaterialDesignIcons.ttf</string>
+	</array>
+	<key>UIFileSharingEnabled</key>
+	<true/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIStatusBarHidden</key>
@@ -90,6 +139,30 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
+	</array>
+	<key>UTExportedTypeDeclarations</key>
+	<array>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.data</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>Brushes Redux Painting</string>
+			<key>UTTypeIdentifier</key>
+			<string>dk.holi.brushes-dev.packed</string>
+			<key>UTTypeSize320IconFile</key>
+			<string>Icon-320x320</string>
+			<key>UTTypeSize64IconFile</key>
+			<string>Icon-64x64</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>brushes</string>
+				</array>
+			</dict>
+		</dict>
 	</array>
 </dict>
 </plist>

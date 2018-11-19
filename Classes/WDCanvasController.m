@@ -45,6 +45,8 @@
 #import "WDUndoChange.h"
 #import "WDUtilities.h"
 #import "WDUnlockView.h"
+#import "WDAppDelegate.h"
+#import "WDBrowserController.h"
 
 #define RESCALE_REPLAY          0
 #define kNavBarFixedWidth       20
@@ -320,7 +322,7 @@
         [shareSheet addButtonWithTitle:NSLocalizedString(@"Duplicate", @"Duplicate")
                                 action:^(id sender) { [canvasController duplicatePainting:sender]; }];
     }
-    
+    /*
     if (NSClassFromString(@"SLComposeViewController")) { // if we can facebook
         [shareSheet addButtonWithTitle:NSLocalizedString(@"Post on Facebook", @"Post on Facebook")
                                 action:^(id sender) { [canvasController postOnFacebook:sender]; }];
@@ -334,6 +336,7 @@
         [shareSheet addButtonWithTitle:NSLocalizedString(@"Email", @"Email")
                                  action:^(id sender) { [canvasController emailPNG:sender]; }];
     }
+     */
     
     [shareSheet addCancelButton];
     
@@ -408,6 +411,7 @@
                                   action:@selector(duplicatePainting:) target:self];
         [menus addObject:item];
         
+        /*
         [menus addObject:[WDMenuItem separatorItem]];
         
         if (NSClassFromString(@"SLComposeViewController")) {
@@ -420,6 +424,7 @@
                                   action:@selector(tweetPainting:) target:self];
         [menus addObject:item];
         
+        
         [menus addObject:[WDMenuItem separatorItem]];
         
         item = [WDMenuItem itemWithTitle:NSLocalizedString(@"Email JPEG", @"Email JPEG")
@@ -429,6 +434,7 @@
         item = [WDMenuItem itemWithTitle:NSLocalizedString(@"Email PNG", @"Email PNG")
                                   action:@selector(emailPNG:) target:self];
         [menus addObject:item];
+         */
         
         actionMenu_ = [[WDMenu alloc] initWithItems:menus];
         actionMenu_.delegate = self;
@@ -1226,9 +1232,7 @@
     UIView *background = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     background.opaque = YES;
     
-    // TODO: temp fix for black artifacts/jagged lines
-    //background.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1];
-    background.backgroundColor = [UIColor colorWithWhite:1 alpha:1];
+    background.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1];
     
     self.view = background;
     
@@ -1755,6 +1759,23 @@
 {
     NSData *imageData = [canvas_.painting JPEGRepresentationForCurrentState];
     [self emailPainting:sender mimeType:@"image/jpeg" data:imageData];
+}
+
+- (void) exportPNG: (id) sender
+{
+    /*
+    NSData *imageData = [canvas_.painting PNGRepresentationForCurrentState];
+    UIActivityViewController* activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[imageData] applicationActivities:nil];
+    activityViewController.completionHandler = ^(NSString* activityType, BOOL completed) {
+        // do whatever you want to do after the activity view controller is finished
+    };
+    //[self presentViewController:activityViewController animated:YES completion:nil];
+    actionMenu_.popover = [self runPopoverWithController:activityViewController from:sender];
+     */
+    
+    WDAppDelegate *delegate = (WDAppDelegate *) [UIApplication sharedApplication].delegate;
+    [delegate.browserController showExportPanel:visibleMenu_];
+    
 }
 
 #pragma mark - Interface Visibility

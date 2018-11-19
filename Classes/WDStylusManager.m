@@ -70,6 +70,10 @@ NSString *WDBlueToothStateChangedNotification = @"WDBlueToothStateChangedNotific
     
     self.mode = [[NSUserDefaults standardUserDefaults] integerForKey:@"WDStylusMode"];
     
+    if ([self isApplePencil]){
+        [self setMode:WDApplePencilStylus];
+    }
+    
     return self;
 }
 
@@ -117,6 +121,9 @@ NSString *WDBlueToothStateChangedNotification = @"WDBlueToothStateChangedNotific
     
     if (type == WDNoStylus) {
         data.productName = NSLocalizedString(@"No Stylus", @"No Stylus");
+    }else if (type == WDApplePencilStylus){
+        data.productName = @"Apple Pencil";
+        data.connected = [self isApplePencil];
     } else if (type == WDPogoConnectStylus) {
         if (pogoManager.activePens.count == 0) {
             data.productName = [self defaultPogoConnectName];
@@ -146,6 +153,9 @@ NSString *WDBlueToothStateChangedNotification = @"WDBlueToothStateChangedNotific
     if ((mode == WDPogoConnectStylus) && [pogoManager oneOrMorePensAreConnected]) {
         isReal = YES;
         pressure = [pogoManager pressureForTouch:touch];
+    } else if (mode == WDApplePencilStylus) {
+        isReal = YES;
+        pressure = touch.force * 0.8;
     } else if (mode != WDNoStylus) {
         isReal = YES;
         // since we're in stylus mode, but no styli are active, use 1.0 pressure
@@ -247,6 +257,22 @@ NSString *WDBlueToothStateChangedNotification = @"WDBlueToothStateChangedNotific
     return self.blueToothState != WDBlueToothOff;
 }
 
+- (BOOL) isApplePencil {
+    // Device information UUID
+    NSArray* myArray = [NSArray arrayWithObject:[CBUUID UUIDWithString:@"180A"]];
+    
+    NSArray* peripherals = [centralBlueToothManager retrieveConnectedPeripheralsWithServices:myArray];
+    for (CBPeripheral* peripheral in peripherals)
+    {
+        if ([[peripheral name] isEqualToString:@"Apple Pencil"])
+        {
+            return YES;
+        }
+    }
+    
+    return NO;
+}
+
 - (void) setBlueToothState:(WDBlueToothState)inBlueToothState
 {
     if (inBlueToothState == blueToothState) {
@@ -258,6 +284,9 @@ NSString *WDBlueToothStateChangedNotification = @"WDBlueToothStateChangedNotific
     if (blueToothState == WDBlueToothLowEnergy && !pogoManager) {
         pogoManager = [T1PogoManager pogoManagerWithDelegate:self];
         pogoManager.enablePenInputOverNetworkIfIncompatiblePad = YES;
+    }else if ([self isApplePencil]){
+        [self didConnectStylus:@"Apple Pencil"];
+        [self setMode:WDApplePencilStylus];
     }
     
     [[NSNotificationCenter defaultCenter] postNotificationName:WDBlueToothStateChangedNotification object:self];

@@ -59,6 +59,14 @@
 		<integer>1536</integer>
 	</dict>
 	<dict>
+		<key>Height</key>
+		<integer>2732</integer>
+		<key>Name</key>
+		<string>iPad Pro</string>
+		<key>Width</key>
+		<integer>2048</integer>
+	</dict>
+	<dict>
 		<key>Name</key>
 		<string>Custom</string>
 		<key>Custom</key>

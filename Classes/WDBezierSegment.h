@@ -12,6 +12,7 @@
 #import <Foundation/Foundation.h>
 
 extern const float kDefaultFlatness;
+extern unsigned long long BezierSegmentRecusionCounter;
 
 @class WDBezierNode;
 @class WD3DPoint;
