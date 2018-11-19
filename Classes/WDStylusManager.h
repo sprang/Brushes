@@ -15,6 +15,7 @@
 
 typedef enum {
     WDNoStylus = 0,
+    WDApplePencilStylus,
     WDPogoConnectStylus,
     WDMaxStylusTypes
 } WDStylusType;

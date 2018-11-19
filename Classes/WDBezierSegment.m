@@ -12,8 +12,13 @@
 #import "WD3DPoint.h"
 #import "WDBezierSegment.h"
 #import "WDBezierNode.h"
+#import <Crashlytics/Crashlytics.h>
+#import "WDActiveState.h"
+#import "WDBrush.h"
+#import "WDTool.h"
 
 const float kDefaultFlatness = 1;
+unsigned long long BezierSegmentRecusionCounter;
 
 @implementation WDBezierSegment
 
@@ -101,6 +106,32 @@ const float kDefaultFlatness = 1;
 
 - (void) flattenIntoArray:(NSMutableArray *)points
 {
+    // Debug comming up
+    
+    if (BezierSegmentRecusionCounter > 100)
+        CLSNSLog(@"BezierSegmentRecusionCounter > 100");
+    
+    if (BezierSegmentRecusionCounter > 200)
+        CLSNSLog(@"BezierSegmentRecusionCounter > 200");
+    
+    if (BezierSegmentRecusionCounter > 300)
+        CLSNSLog(@"BezierSegmentRecusionCounter > 300");
+    
+    if (BezierSegmentRecusionCounter > 400)
+        CLSNSLog(@"BezierSegmentRecusionCounter > 400");
+    
+    if (BezierSegmentRecusionCounter > 500)
+    {
+        CLSNSLog(@"BezierSegmentRecusionCounter > 500 - bailing out of flattenIntoArray:");
+        CLSNSLog(@"Brushes count: %lu", (unsigned long)[WDActiveState sharedInstance].brushesCount);
+        CLSNSLog(@"Brush data: %@", [[WDActiveState sharedInstance].brush allProperties]);
+        CLSNSLog(@"Active tool (icon name): %@", [WDActiveState sharedInstance].activeTool.iconName);
+        CLSNSLog(@"Paint color: %@", [WDActiveState sharedInstance].paintColor);
+        return;
+    }
+    
+    BezierSegmentRecusionCounter++;
+    
     if ([self isFlatWithTolerance:kDefaultFlatness]) {
         if (points.count == 0) {
             [points addObject:self.start];

@@ -10,6 +10,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <OpenGLES/ES2/gl.h>
 
 #if WD_DEBUG
 #define WDLog NSLog

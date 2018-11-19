@@ -44,6 +44,7 @@
     
     self.title = NSLocalizedString(@"Brushes", @"Brushes");
     
+    
     [self configureNavBar];
     
     return self;
@@ -87,15 +88,22 @@
 }
 
 - (void) selectActiveBrush
-{
+{    
     NSUInteger  activeRow = [[WDActiveState sharedInstance] indexOfActiveBrush];
+    
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:activeRow inSection:0];
+    
+    if (activeRow == 0)
+    {
+        [brushTable selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionTop];
+        return;
+    }
     
     if ([[brushTable indexPathForSelectedRow] isEqual:[NSIndexPath indexPathForRow:activeRow inSection:0]]) {
         [self scrollToSelectedRowIfNotVisible];
         return;
     }
 
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:activeRow inSection:0];
     // in selectRowAtIndex, "None" means no scrolling; in scrollToNearest, "None" means do minimal scrolling
     [brushTable selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
     [brushTable scrollToNearestSelectedRowAtScrollPosition:UITableViewScrollPositionNone animated:NO];
@@ -359,7 +367,10 @@
     [doubleTap addTarget:self action:@selector(done:)];
     [brushTable addGestureRecognizer:doubleTap];
     
-    self.contentSizeForViewInPopover = self.view.frame.size;
+    if ([self respondsToSelector:@selector(setPreferredContentSize:)])
+        self.preferredContentSize = self.view.frame.size;
+    else
+        self.contentSizeForViewInPopover = self.view.frame.size;
 
     self.navigationItem.leftBarButtonItem.enabled = [[WDActiveState sharedInstance] canDeleteBrush];
     

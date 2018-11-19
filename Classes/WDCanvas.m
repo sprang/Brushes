@@ -191,6 +191,7 @@ NSString *WDGestureEndedNotification = @"WDGestureEnded";
     self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.exclusiveTouch = YES;
     self.opaque = YES;
+    
     self.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1];
     
     [self configureGestures];
@@ -595,6 +596,7 @@ NSString *WDGestureEndedNotification = @"WDGestureEnded";
         glClearColor(randomColor.red, randomColor.green, randomColor.blue, 0.5f);
         glClear(GL_COLOR_BUFFER_BIT);
     }
+    
     glDisable(GL_SCISSOR_TEST);
 
     [mainRegion present];
@@ -963,7 +965,6 @@ NSString *WDGestureEndedNotification = @"WDGestureEnded";
     }
     
     BOOL oneFingerTapsCanPaint = [[NSUserDefaults standardUserDefaults] boolForKey:@"WDTwoFingerInterfaceToggle"];
-    
     if (!self.controller.editing || !oneFingerTapsCanPaint) {
         [self.controller oneTap:sender];
         return;

@@ -21,10 +21,12 @@ void main (void)
     float srcAlpha = color.a * texture2D(mask, varTexcoord.st, 0.0).a;
     
     float outAlpha = srcAlpha + dst.a * (1.0 - srcAlpha);
-    
-    gl_FragColor.rgb = (color.rgb * srcAlpha + dst.rgb * dst.a * (1.0 - srcAlpha)) / outAlpha;
+    //  The following is causing black artifacts during blits
+    //    gl_FragColor.rgb = (color.rgb * srcAlpha + dst.rgb * dst.a * (1.0 - srcAlpha)) / invOutAlpha;
+    gl_FragColor.rgb = (color.rgb * srcAlpha + dst.rgb * dst.a * (1.0 - srcAlpha));
     gl_FragColor.a = lockAlpha ? dst.a : outAlpha;
     
     gl_FragColor.a *= opacity;
-    gl_FragColor.rgb *= gl_FragColor.a;
+    //  The following line desaturates the color unecessarily
+    //    gl_FragColor.rgb *= gl_FragColor.a;
 }

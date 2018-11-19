@@ -116,8 +116,11 @@ static NSString * const WDDropboxSubdirectoryMissingNotification = @"WDDropboxSu
     importButton_.enabled = NO;
     
     self.toolbarItems = [self toolbarItems];
-	
-    self.contentSizeForViewInPopover = CGSizeMake(320, 480);
+    
+    if ([self respondsToSelector:@selector(setPreferredContentSize:)])
+        self.preferredContentSize = CGSizeMake(320, 480);
+    else
+        self.contentSizeForViewInPopover = CGSizeMake(320, 480);
     
     return self;
 }
@@ -294,6 +297,7 @@ static NSString * const WDDropboxSubdirectoryMissingNotification = @"WDDropboxSu
 
 - (void)restClient:(DBRestClient*)client loadMetadataFailedWithError:(NSError*)error
 {
+    /*
 	NSString *missingRemotePath = [[error userInfo] valueForKey:@"path"];
 	NSString *lastVisitedPath = [[NSUserDefaults standardUserDefaults] valueForKey:WDDropboxLastPathVisited];
 	if ([error code] == 404 && [missingRemotePath isEqualToString:lastVisitedPath]) {
@@ -301,11 +305,12 @@ static NSString * const WDDropboxSubdirectoryMissingNotification = @"WDDropboxSu
 	} else if ([error code] == 404 && [[[[error userInfo] valueForKey:@"path"] lastPathComponent] isEqualToString:@"Brushes"]) {
 		[dropboxClient_ createFolder:@"/Brushes"];
 	} else {
+     */
 		[activityIndicator_ stopAnimating];
 #if WD_DEBUG
 		NSLog(@"Dropbox metadata load encountered error: %@", error);
 #endif
-	}
+	//}
 }
 
 - (void)restClient:(DBRestClient*)client createdFolder:(DBMetadata*)folder 

@@ -14,5 +14,6 @@
 @interface WDPanGestureRecognizer : UIPanGestureRecognizer
 
 @property (nonatomic) NSSet *touches;
+@property (nonatomic) UIEvent *event;
 
 @end

@@ -37,7 +37,6 @@
     UIPopoverController     *popoverController_;
     UIBarButtonItem         *selectItem_;
     UIBarButtonItem         *deleteItem_;
-    UIBarButtonItem         *shareItem_;
     
     NSMutableSet            *selectedPaintings_;
     
@@ -56,15 +55,21 @@
 @property (nonatomic, weak) UIViewController *currentPopoverViewController;
 @property (nonatomic) UIActivityIndicatorView *activityIndicator;
 @property (nonatomic) WDGridView *gridView;
+@property (nonatomic) UIBarButtonItem *shareItem;
 
 - (void) openDocument:(WDDocument *)document editing:(BOOL)editing;
 - (void) showOpenFailure:(WDDocument *)document;
 
 - (void) properlyEnableNavBarItems;
 
+- (void) sharePaintings:(NSString *)format;
 - (void) emailPaintings:(NSString *)format;
 - (void) sendToDropbox:(NSString *)format;
 
 - (void) createNewPainting:(CGSize)size;
+
+- (void) showExportPanel:(id)sender;
+
+- (void) showController:(UIViewController *)controller from:(id)sender;
 
 @end

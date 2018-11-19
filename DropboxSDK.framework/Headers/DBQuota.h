@@ -6,6 +6,7 @@
 //  Copyright 2010 Dropbox, Inc. All rights reserved.
 //
 
+#import <Foundation/Foundation.h>
 
 @interface DBQuota : NSObject <NSCoding> {
     long long normalConsumedBytes;

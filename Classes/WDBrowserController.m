@@ -28,6 +28,7 @@
 #import "WDThumbnailView.h"
 #import "WDUtilities.h"
 #import "WDPaintingIterator.h"
+#import "MaterialDesignIcons.h"
 
 #define ALLOW_CAMERA_IMPORT NO
 
@@ -99,6 +100,58 @@ static NSString *WDAttachmentNotification = @"WDAttachmentNotification";
     }
 }
 
+- (void) sharePaintings: (NSString *)format
+{
+    [self dismissPopoverAnimated:YES];
+    
+    NSString *contentType = [WDDocument contentTypeForFormat:format];
+    [self startExportActivity:contentType];
+    
+    NSMutableArray* urls = [NSMutableArray arrayWithCapacity:[selectedPaintings_ count]];
+    
+    WDPaintingIterator *iterator = [[WDPaintingIterator alloc] init];
+    iterator.paintings = [selectedPaintings_ allObjects];
+    
+    iterator.block = ^void(WDDocument *document) {
+        NSError *err = nil;
+        NSData  *data = [document contentsForType:contentType error:&err];
+        
+        NSString *extension = nil;
+        if ([contentType isEqualToString:kWDBrushesFileType])
+            extension = kWDBrushesFileType;
+        else
+            extension = [document fileNameExtensionForType:contentType saveOperation:UIDocumentSaveForCreating];
+        
+        NSString *fullName = [document.displayName stringByAppendingPathExtension:extension];
+        NSString *path = [NSTemporaryDirectory() stringByAppendingPathComponent:fullName];
+        // Save the file to the temp path
+        [data writeToFile:path atomically:YES];
+        
+        [activities_ removeActivityWithFilepath:path];
+        
+        [urls addObject:[NSURL fileURLWithPath:path]];
+        
+    };
+    
+    iterator.completed = ^void(NSArray* paintings){
+        UIActivityViewController* activityViewController = [[UIActivityViewController alloc] initWithActivityItems:urls applicationActivities:nil];
+        activityViewController.completionHandler = ^(NSString* activityType, BOOL completed) {
+            if (completed)
+            {
+                for(NSURL * url in urls)
+                {
+                    // Remove the file again
+                    [[NSFileManager defaultManager] removeItemAtURL:url error:nil];
+                }
+            }
+        };
+        
+        [self showController:activityViewController from:self.shareItem];
+    };
+    
+    [iterator processNext];
+}
+
 - (void) emailPaintings:(NSString *)format
 {
     [self dismissPopoverAnimated:YES];
@@ -142,8 +195,19 @@ static NSString *WDAttachmentNotification = @"WDAttachmentNotification";
 {
     for (NSString *name in selectedPaintings_) {
         WDDocument *document = [[WDPaintingManager sharedInstance] paintingWithName:name];
-        NSString *extension = [document fileNameExtensionForType:contentType saveOperation:UIDocumentSaveForCreating];
-        NSString *fullName = [name stringByAppendingPathExtension:extension];
+
+        NSString *extension = nil;
+        
+        if ([contentType isEqualToString:kWDBrushesFileType])
+            extension = kWDBrushesFileType;
+        else
+            extension = [document fileNameExtensionForType:contentType saveOperation:UIDocumentSaveForCreating];
+        
+        NSString *fullName = name;
+        
+        if (extension)
+            fullName = [name stringByAppendingPathExtension:extension];
+
         NSString *path = [NSTemporaryDirectory() stringByAppendingPathComponent:fullName];
         WDActivity *exportActivity = [WDActivity activityWithFilePath:path type:WDActivityTypeExport];
         [activities_ addActivity:exportActivity];
@@ -160,15 +224,22 @@ static NSString *WDAttachmentNotification = @"WDAttachmentNotification";
     }
     
     NSString *contentType = [WDDocument contentTypeForFormat:format];
+    
     [self startExportActivity:contentType];
     
     WDPaintingIterator *iterator = [[WDPaintingIterator alloc] init];
     iterator.paintings = [selectedPaintings_ allObjects];
     iterator.block = ^void(WDDocument *document) {
-        NSString *extension = [document fileNameExtensionForType:contentType saveOperation:UIDocumentSaveForCreating];
+        NSString *extension = nil;
+        
+        if ([contentType isEqualToString:kWDBrushesFileType])
+            extension = kWDBrushesFileType;
+        else
+            extension = [document fileNameExtensionForType:contentType saveOperation:UIDocumentSaveForCreating];
+        
         NSString *fullName = [document.displayName stringByAppendingPathExtension:extension];
         NSString *path = [NSTemporaryDirectory() stringByAppendingPathComponent:fullName];
-
+        
         NSError *err = nil;
         if ([document writeTemp:path type:contentType error:&err]) {
             [restClient_ uploadFile:[path lastPathComponent] toPath:[self appFolderPath]
@@ -206,13 +277,27 @@ static NSString *WDAttachmentNotification = @"WDAttachmentNotification";
                                                                     action:@selector(showDeleteMenu:)];
     }
     
-    if (!shareItem_) {
-        shareItem_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction 
-                                                                   target:self
-                                                                   action:@selector(showExportPanel:)];
+    if (!self.shareItem) {
+        self.shareItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(showExportPanel:)];
     }
+    /*
+    if (!cloudItem_) {
+        
+        NSShadow *shadow = [NSShadow new];
+        [shadow setShadowColor : [UIColor colorWithWhite:0.0f alpha:0.0f]];
+        [shadow setShadowOffset : CGSizeMake(0.0f, -8.0f)];
+        
+        cloudItem_ = [[UIBarButtonItem alloc] initWithTitle:MaterialDesignIconsCloudUpload style:UIBarButtonItemStylePlain target:self action:@selector(showCloudExportPanel:)];
+        NSDictionary *attributes = @{
+                                     NSFontAttributeName: [UIFont fontWithName:MaterialDesignIconsFontName size:30.0],
+                                     NSShadowAttributeName: shadow
+                                     };
+        [cloudItem_ setTitleTextAttributes:attributes forState:UIControlStateNormal];
+        [cloudItem_ setTitleTextAttributes:attributes forState:UIControlStateDisabled];
+    }
+     */
     
-    self.navigationItem.rightBarButtonItems = @[shareItem_, deleteItem_];
+    self.navigationItem.rightBarButtonItems = @[self.shareItem, deleteItem_];
     
     UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                                                                               target:self
@@ -594,18 +679,21 @@ static NSString *WDAttachmentNotification = @"WDAttachmentNotification";
 
 - (NSString*) appFolderPath
 {
+    return @"/";
+    /*
     NSString* appFolderPath = @"Brushes";
     if (![appFolderPath isAbsolutePath]) {
         appFolderPath = [@"/" stringByAppendingString:appFolderPath];
     }
     
-    return appFolderPath;    
+    return appFolderPath;
+    */
 }
 
 - (void) properlyEnableNavBarItems
 {
     deleteItem_.enabled = [selectedPaintings_ count] == 0 ? NO : YES;
-    shareItem_.enabled = [selectedPaintings_ count] == 0 ? NO : YES;
+    self.shareItem.enabled = [selectedPaintings_ count] == 0 ? NO : YES;
 }
 
 - (void)restClient:(DBRestClient*)client uploadedFile:(NSString*)destPath from:(NSString*)srcPath
@@ -739,7 +827,8 @@ static NSString *WDAttachmentNotification = @"WDAttachmentNotification";
         return YES;
     } else {
         [self dismissPopoverAnimated:NO];
-        [[DBSession sharedSession] linkUserId:nil fromController:self];
+        //[[DBSession sharedSession] linkUserId:nil fromController:self];
+        [[DBSession sharedSession] linkFromController:self];
         return NO;
     }
 }
@@ -786,7 +875,7 @@ static NSString *WDAttachmentNotification = @"WDAttachmentNotification";
     // embed in a nav controller
     UIViewController *presentedController;
     
-    if ([controller isKindOfClass:[UIImagePickerController class]]) {
+    if ([controller isKindOfClass:[UIImagePickerController class]] || [controller isKindOfClass:[UIActivityViewController class]]) {
         presentedController = controller;
     } else {
         presentedController = [[UINavigationController alloc] initWithRootViewController:controller];
@@ -819,6 +908,14 @@ static NSString *WDAttachmentNotification = @"WDAttachmentNotification";
 
 - (void) showExportPanel:(id)sender
 {
+    /*
+     NSData *imageData = [canvas_.painting PNGRepresentationForCurrentState];
+     UIActivityViewController* activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[imageData] applicationActivities:nil];
+     activityViewController.completionHandler = ^(NSString* activityType, BOOL completed) {
+     // do whatever you want to do after the activity view controller is finished
+     };
+     */
+    
     WDExportController *controller = nil;
     
     if (![self.currentPopoverViewController isKindOfClass:[WDExportController class]]) {

@@ -346,7 +346,7 @@ NSString *WDPaintingNewFilenameKey = @"WDPaintingNewFilenameKey";
     static dispatch_once_t onceToken;
     
     dispatch_once(&onceToken, ^{
-        importQueue = dispatch_queue_create("com.taptrix.brushes.import", DISPATCH_QUEUE_SERIAL);
+        importQueue = dispatch_queue_create("dk.holi.brushes.import", DISPATCH_QUEUE_SERIAL);
     });
     
     return importQueue;
